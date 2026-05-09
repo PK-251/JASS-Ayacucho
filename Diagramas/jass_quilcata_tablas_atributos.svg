@@ -1,0 +1,521 @@
+﻿<svg xmlns='http://www.w3.org/2000/svg' width='2674' height='2851' viewBox='0 0 2674 2851'>
+<rect width='100%' height='100%' fill='#0f172a'/>
+<style><![CDATA[
+  .title{font:700 34px Segoe UI,Arial,sans-serif;fill:#e5edf8}
+  .sub{font:400 15px Segoe UI,Arial,sans-serif;fill:#94a3b8}
+  .box{fill:#111827;stroke:#475569;stroke-width:1.2;rx:10}
+  .head{fill:#1e3a5f;rx:10}
+  .table{font:700 17px Segoe UI,Arial,sans-serif;fill:#dbeafe}
+  .meta{font:600 11px Segoe UI,Arial,sans-serif;fill:#bfdbfe}
+  .attr{font:400 12px Consolas,Menlo,monospace;fill:#e2e8f0}
+  .pk{fill:#fbbf24}
+]]></style>
+<text class='title' x='40' y='48'>JASS Quilcata - Diagrama de tablas y atributos</text>
+<text class='sub' x='40' y='76'>Base MariaDB: jass_quilcata | 24 tablas | Partes 1 a 8</text>
+<rect class='box' x='40' y='136' width='620' height='349'/>
+<rect class='head' x='40' y='136' width='620' height='36'/>
+<text class='table' x='54' y='160'>vista_ingresos_completa</text>
+<text class='meta' x='574' y='160'>15 cols</text>
+<text class='attr' x='54' y='188'>id : bigint(20) unsigned [NN]</text>
+<text class='attr' x='54' y='207'>numero_serie : varchar(20) [NN]</text>
+<text class='attr' x='54' y='226'>origen : varchar(6) [NN]</text>
+<text class='attr' x='54' y='245'>fecha_ingreso : date</text>
+<text class='attr' x='54' y='264'>fecha : date [NN]</text>
+<text class='attr' x='54' y='283'>hora : time</text>
+<text class='attr' x='54' y='302'>vecino_id : bigint(20) unsigned</text>
+<text class='attr' x='54' y='321'>vecino_nombre : varchar(201)</text>
+<text class='attr' x='54' y='340'>vecino_codigo : varchar(10)</text>
+<text class='attr' x='54' y='359'>concepto : varchar(255) [NN]</text>
+<text class='attr' x='54' y='378'>categoria : varchar(50) [NN]</text>
+<text class='attr' x='54' y='397'>metodo_pago : varchar(13) [NN]</text>
+<text class='attr' x='54' y='416'>monto : decimal(10,2) [NN]</text>
+<text class='attr' x='54' y='435'>estado : varchar(7) [NN]</text>
+<text class='attr' x='54' y='454'>registrado_por_id : bigint(20) unsigned [NN]</text>
+<rect class='box' x='698' y='136' width='620' height='159'/>
+<rect class='head' x='698' y='136' width='620' height='36'/>
+<text class='table' x='712' y='160'>roles</text>
+<text class='meta' x='1232' y='160'>5 cols</text>
+<text class='attr pk' x='712' y='188'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='712' y='207'>nombre : varchar(50) [UQ, NN]</text>
+<text class='attr' x='712' y='226'>descripcion : varchar(255)</text>
+<text class='attr' x='712' y='245'>created_at : timestamp [NN]</text>
+<text class='attr' x='712' y='264'>updated_at : timestamp [NN]</text>
+<rect class='box' x='1356' y='136' width='620' height='368'/>
+<rect class='head' x='1356' y='136' width='620' height='36'/>
+<text class='table' x='1370' y='160'>users</text>
+<text class='meta' x='1890' y='160'>16 cols</text>
+<text class='attr pk' x='1370' y='188'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='1370' y='207'>username : varchar(50) [UQ, NN]</text>
+<text class='attr' x='1370' y='226'>nombres : varchar(100) [NN]</text>
+<text class='attr' x='1370' y='245'>apellidos : varchar(100) [NN]</text>
+<text class='attr' x='1370' y='264'>email : varchar(150) [UQ]</text>
+<text class='attr' x='1370' y='283'>password : varchar(255) [NN]</text>
+<text class='attr' x='1370' y='302'>rol_id : int(10) unsigned [IX, FK-&gt;roles.id, NN]</text>
+<text class='attr' x='1370' y='321'>estado : enum(&apos;activo&apos;,&apos;inactivo&apos;,&apos;bloqueado&apos;) [IX, NN]</text>
+<text class='attr' x='1370' y='340'>intentos_fallidos : tinyint(3) unsigned [NN]</text>
+<text class='attr' x='1370' y='359'>bloqueado_hasta : timestamp</text>
+<text class='attr' x='1370' y='378'>requiere_cambio_password : tinyint(1) [NN]</text>
+<text class='attr' x='1370' y='397'>ultimo_login : timestamp</text>
+<text class='attr' x='1370' y='416'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='1370' y='435'>created_at : timestamp [NN]</text>
+<text class='attr' x='1370' y='454'>updated_at : timestamp [NN]</text>
+<text class='attr' x='1370' y='473'>deleted_at : timestamp [IX]</text>
+<rect class='box' x='2014' y='136' width='620' height='216'/>
+<rect class='head' x='2014' y='136' width='620' height='36'/>
+<text class='table' x='2028' y='160'>login_logs</text>
+<text class='meta' x='2548' y='160'>8 cols</text>
+<text class='attr pk' x='2028' y='188'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='2028' y='207'>user_id : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='226'>username_intentado : varchar(50) [IX, NN]</text>
+<text class='attr' x='2028' y='245'>ip_address : varchar(45) [IX, NN]</text>
+<text class='attr' x='2028' y='264'>user_agent : text</text>
+<text class='attr' x='2028' y='283'>resultado : enum(&apos;exitoso&apos;,&apos;fallido_credenciales&apos;,&apos;fallido_bloqueado&apos;,&apos;sesion_expirada&apos;) [IX, NN]</text>
+<text class='attr' x='2028' y='302'>motivo_fallo : varchar(255)</text>
+<text class='attr' x='2028' y='321'>fecha_intento : timestamp [IX, NN]</text>
+<rect class='box' x='698' y='329' width='620' height='121'/>
+<rect class='head' x='698' y='329' width='620' height='36'/>
+<text class='table' x='712' y='353'>password_reset_tokens</text>
+<text class='meta' x='1232' y='353'>3 cols</text>
+<text class='attr pk' x='712' y='381'>email : varchar(150) [PK, NN]</text>
+<text class='attr' x='712' y='400'>token : varchar(255) [NN]</text>
+<text class='attr' x='712' y='419'>created_at : timestamp [NN]</text>
+<rect class='box' x='2014' y='386' width='620' height='254'/>
+<rect class='head' x='2014' y='386' width='620' height='36'/>
+<text class='table' x='2028' y='410'>personal_access_tokens</text>
+<text class='meta' x='2548' y='410'>10 cols</text>
+<text class='attr pk' x='2028' y='438'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='2028' y='457'>tokenable_type : varchar(255) [IX, NN]</text>
+<text class='attr' x='2028' y='476'>tokenable_id : bigint(20) unsigned [NN]</text>
+<text class='attr' x='2028' y='495'>name : varchar(255) [NN]</text>
+<text class='attr' x='2028' y='514'>token : varchar(64) [UQ, NN]</text>
+<text class='attr' x='2028' y='533'>abilities : text</text>
+<text class='attr' x='2028' y='552'>last_used_at : timestamp</text>
+<text class='attr' x='2028' y='571'>expires_at : timestamp</text>
+<text class='attr' x='2028' y='590'>created_at : timestamp [NN]</text>
+<text class='attr' x='2028' y='609'>updated_at : timestamp [NN]</text>
+<rect class='box' x='698' y='484' width='620' height='216'/>
+<rect class='head' x='698' y='484' width='620' height='36'/>
+<text class='table' x='712' y='508'>categorias_servicio</text>
+<text class='meta' x='1232' y='508'>8 cols</text>
+<text class='attr pk' x='712' y='536'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='712' y='555'>nombre : varchar(50) [UQ, NN]</text>
+<text class='attr' x='712' y='574'>descripcion : varchar(255)</text>
+<text class='attr' x='712' y='593'>icono : varchar(50)</text>
+<text class='attr' x='712' y='612'>color_hex : varchar(7)</text>
+<text class='attr' x='712' y='631'>activa : tinyint(1) [IX, NN]</text>
+<text class='attr' x='712' y='650'>created_at : timestamp [NN]</text>
+<text class='attr' x='712' y='669'>updated_at : timestamp [NN]</text>
+<rect class='box' x='40' y='519' width='620' height='482'/>
+<rect class='head' x='40' y='519' width='620' height='36'/>
+<text class='table' x='54' y='543'>vecinos</text>
+<text class='meta' x='574' y='543'>22 cols</text>
+<text class='attr pk' x='54' y='571'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='54' y='590'>codigo : varchar(10) [UQ, NN]</text>
+<text class='attr' x='54' y='609'>documento_tipo : enum(&apos;DNI&apos;,&apos;RUC&apos;,&apos;CE&apos;) [NN]</text>
+<text class='attr' x='54' y='628'>documento_num : varchar(11) [UQ, NN]</text>
+<text class='attr' x='54' y='647'>nombres : varchar(100) [IX, NN]</text>
+<text class='attr' x='54' y='666'>apellidos : varchar(100) [NN]</text>
+<text class='attr' x='54' y='685'>direccion : varchar(255) [NN]</text>
+<text class='attr' x='54' y='704'>telefono : varchar(20)</text>
+<text class='attr' x='54' y='723'>email : varchar(150)</text>
+<text class='attr' x='54' y='742'>categoria_id : int(10) unsigned [IX, FK-&gt;categorias_servicio.id, NN]</text>
+<text class='attr' x='54' y='761'>estado : enum(&apos;activo&apos;,&apos;suspendido&apos;,&apos;cortado&apos;,&apos;baja&apos;) [IX, NN]</text>
+<text class='attr' x='54' y='780'>tiene_medidor : tinyint(1) [NN]</text>
+<text class='attr' x='54' y='799'>numero_medidor : varchar(30) [UQ]</text>
+<text class='attr' x='54' y='818'>fecha_registro : date [NN]</text>
+<text class='attr' x='54' y='837'>fecha_corte : date</text>
+<text class='attr' x='54' y='856'>motivo_estado : varchar(500)</text>
+<text class='attr' x='54' y='875'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='894'>updated_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='913'>deleted_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='932'>created_at : timestamp [NN]</text>
+<text class='attr' x='54' y='951'>updated_at : timestamp [NN]</text>
+<text class='attr' x='54' y='970'>deleted_at : timestamp [IX]</text>
+<rect class='box' x='1356' y='538' width='620' height='292'/>
+<rect class='head' x='1356' y='538' width='620' height='36'/>
+<text class='table' x='1370' y='562'>tarifas</text>
+<text class='meta' x='1890' y='562'>12 cols</text>
+<text class='attr pk' x='1370' y='590'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='1370' y='609'>categoria_id : int(10) unsigned [IX, FK-&gt;categorias_servicio.id, NN]</text>
+<text class='attr' x='1370' y='628'>monto : decimal(8,2) [NN]</text>
+<text class='attr' x='1370' y='647'>fecha_vigencia_inicio : date [IX, NN]</text>
+<text class='attr' x='1370' y='666'>fecha_vigencia_fin : date</text>
+<text class='attr' x='1370' y='685'>activa : tinyint(1) [NN]</text>
+<text class='attr' x='1370' y='704'>descripcion : varchar(500)</text>
+<text class='attr' x='1370' y='723'>motivo_cambio : varchar(500)</text>
+<text class='attr' x='1370' y='742'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='1370' y='761'>updated_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='1370' y='780'>created_at : timestamp [NN]</text>
+<text class='attr' x='1370' y='799'>updated_at : timestamp [NN]</text>
+<rect class='box' x='2014' y='674' width='620' height='311'/>
+<rect class='head' x='2014' y='674' width='620' height='36'/>
+<text class='table' x='2028' y='698'>multas</text>
+<text class='meta' x='2548' y='698'>13 cols</text>
+<text class='attr pk' x='2028' y='726'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='2028' y='745'>codigo : varchar(10) [UQ, NN]</text>
+<text class='attr' x='2028' y='764'>nombre : varchar(100) [NN]</text>
+<text class='attr' x='2028' y='783'>descripcion : varchar(500)</text>
+<text class='attr' x='2028' y='802'>monto : decimal(8,2) [NN]</text>
+<text class='attr' x='2028' y='821'>tipo_aplicacion : enum(&apos;automatica_mensual&apos;,&apos;manual&apos;,&apos;semi_automatica&apos;) [IX, NN]</text>
+<text class='attr' x='2028' y='840'>condicion_aplicacion : varchar(500)</text>
+<text class='attr' x='2028' y='859'>activa : tinyint(1) [IX, NN]</text>
+<text class='attr' x='2028' y='878'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='897'>updated_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='916'>created_at : timestamp [NN]</text>
+<text class='attr' x='2028' y='935'>updated_at : timestamp [NN]</text>
+<text class='attr' x='2028' y='954'>deleted_at : timestamp</text>
+<rect class='box' x='698' y='734' width='620' height='273'/>
+<rect class='head' x='698' y='734' width='620' height='36'/>
+<text class='table' x='712' y='758'>jornadas_cobro</text>
+<text class='meta' x='1232' y='758'>11 cols</text>
+<text class='attr pk' x='712' y='786'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='712' y='805'>operador_id : bigint(20) unsigned [IX, FK-&gt;users.id, NN]</text>
+<text class='attr' x='712' y='824'>fecha_inicio : timestamp [IX, NN]</text>
+<text class='attr' x='712' y='843'>fecha_cierre : timestamp</text>
+<text class='attr' x='712' y='862'>estado : enum(&apos;activa&apos;,&apos;cerrada&apos;) [IX, NN]</text>
+<text class='attr' x='712' y='881'>total_vecinos_atendidos : int(10) unsigned [NN]</text>
+<text class='attr' x='712' y='900'>total_recaudado : decimal(10,2) [NN]</text>
+<text class='attr' x='712' y='919'>total_pendientes_registrados : int(10) unsigned [NN]</text>
+<text class='attr' x='712' y='938'>observaciones : varchar(500)</text>
+<text class='attr' x='712' y='957'>created_at : timestamp [NN]</text>
+<text class='attr' x='712' y='976'>updated_at : timestamp [NN]</text>
+<rect class='box' x='1356' y='864' width='620' height='558'/>
+<rect class='head' x='1356' y='864' width='620' height='36'/>
+<text class='table' x='1370' y='888'>cobros</text>
+<text class='meta' x='1890' y='888'>26 cols</text>
+<text class='attr pk' x='1370' y='916'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='1370' y='935'>numero_serie : varchar(20) [UQ, NN]</text>
+<text class='attr' x='1370' y='954'>vecino_id : bigint(20) unsigned [IX, FK-&gt;vecinos.id, NN]</text>
+<text class='attr' x='1370' y='973'>operador_id : bigint(20) unsigned [IX, FK-&gt;users.id, NN]</text>
+<text class='attr' x='1370' y='992'>jornada_id : bigint(20) unsigned [IX, FK-&gt;jornadas_cobro.id]</text>
+<text class='attr' x='1370' y='1011'>periodo_anio : smallint(5) unsigned [IX, NN]</text>
+<text class='attr' x='1370' y='1030'>periodo_mes : tinyint(3) unsigned [NN]</text>
+<text class='attr' x='1370' y='1049'>monto_cuota : decimal(8,2) [NN]</text>
+<text class='attr' x='1370' y='1068'>monto_deuda_anterior : decimal(8,2) [NN]</text>
+<text class='attr' x='1370' y='1087'>monto_multas : decimal(8,2) [NN]</text>
+<text class='attr' x='1370' y='1106'>monto_total : decimal(8,2) [NN]</text>
+<text class='attr' x='1370' y='1125'>monto_recibido : decimal(8,2) [NN]</text>
+<text class='attr' x='1370' y='1144'>metodo_pago : enum(&apos;efectivo&apos;,&apos;transferencia&apos;,&apos;yape&apos;,&apos;plin&apos;,&apos;otro&apos;) [NN]</text>
+<text class='attr' x='1370' y='1163'>estado : enum(&apos;pagado&apos;,&apos;anulado&apos;) [IX, NN]</text>
+<text class='attr' x='1370' y='1182'>fecha_cobro : date [IX, NN]</text>
+<text class='attr' x='1370' y='1201'>hora_cobro : time [NN]</text>
+<text class='attr' x='1370' y='1220'>observaciones : varchar(500)</text>
+<text class='attr' x='1370' y='1239'>motivo_ultima_edicion : varchar(500)</text>
+<text class='attr' x='1370' y='1258'>editado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='1370' y='1277'>fecha_ultima_edicion : timestamp</text>
+<text class='attr' x='1370' y='1296'>motivo_anulacion : varchar(500)</text>
+<text class='attr' x='1370' y='1315'>anulado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='1370' y='1334'>fecha_anulacion : timestamp</text>
+<text class='attr' x='1370' y='1353'>devolver_dinero : tinyint(1)</text>
+<text class='attr' x='1370' y='1372'>created_at : timestamp [NN]</text>
+<text class='attr' x='1370' y='1391'>updated_at : timestamp [NN]</text>
+<rect class='box' x='2014' y='1019' width='620' height='387'/>
+<rect class='head' x='2014' y='1019' width='620' height='36'/>
+<text class='table' x='2028' y='1043'>comprobantes_pdf</text>
+<text class='meta' x='2548' y='1043'>17 cols</text>
+<text class='attr pk' x='2028' y='1071'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='2028' y='1090'>cobro_id : bigint(20) unsigned [UQ, FK-&gt;cobros.id, NN]</text>
+<text class='attr' x='2028' y='1109'>numero_serie : varchar(20) [IX, NN]</text>
+<text class='attr' x='2028' y='1128'>ruta_archivo : varchar(500) [NN]</text>
+<text class='attr' x='2028' y='1147'>nombre_archivo : varchar(100) [NN]</text>
+<text class='attr' x='2028' y='1166'>tamano_bytes : int(10) unsigned</text>
+<text class='attr' x='2028' y='1185'>codigo_qr_url : varchar(255)</text>
+<text class='attr' x='2028' y='1204'>modalidad_entrega : enum(&apos;pendiente&apos;,&apos;impresion&apos;,&apos;qr&apos;,&apos;email&apos;,&apos;multiple&apos;) [IX, NN]</text>
+<text class='attr' x='2028' y='1223'>fecha_generacion : timestamp [NN]</text>
+<text class='attr' x='2028' y='1242'>fecha_entrega : timestamp</text>
+<text class='attr' x='2028' y='1261'>enviado_email : tinyint(1) [NN]</text>
+<text class='attr' x='2028' y='1280'>email_destinatario : varchar(150)</text>
+<text class='attr' x='2028' y='1299'>fecha_envio_email : timestamp</text>
+<text class='attr' x='2028' y='1318'>impreso : tinyint(1) [NN]</text>
+<text class='attr' x='2028' y='1337'>fecha_impresion : timestamp</text>
+<text class='attr' x='2028' y='1356'>created_at : timestamp [NN]</text>
+<text class='attr' x='2028' y='1375'>updated_at : timestamp [NN]</text>
+<rect class='box' x='40' y='1035' width='620' height='406'/>
+<rect class='head' x='40' y='1035' width='620' height='36'/>
+<text class='table' x='54' y='1059'>multas_aplicadas</text>
+<text class='meta' x='574' y='1059'>18 cols</text>
+<text class='attr pk' x='54' y='1087'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='54' y='1106'>vecino_id : bigint(20) unsigned [IX, FK-&gt;vecinos.id, NN]</text>
+<text class='attr' x='54' y='1125'>multa_id : int(10) unsigned [IX, FK-&gt;multas.id, NN]</text>
+<text class='attr' x='54' y='1144'>monto_aplicado : decimal(8,2) [NN]</text>
+<text class='attr' x='54' y='1163'>estado : enum(&apos;pendiente&apos;,&apos;cobrada&apos;,&apos;anulada&apos;,&apos;justificada&apos;) [IX, NN]</text>
+<text class='attr' x='54' y='1182'>fecha_aplicacion : date [NN]</text>
+<text class='attr' x='54' y='1201'>fecha_cobro : date</text>
+<text class='attr' x='54' y='1220'>fecha_anulacion : timestamp</text>
+<text class='attr' x='54' y='1239'>aplicada_por : bigint(20) unsigned [IX, FK-&gt;users.id, NN]</text>
+<text class='attr' x='54' y='1258'>motivo_aplicacion : varchar(500)</text>
+<text class='attr' x='54' y='1277'>cobro_id : bigint(20) unsigned [IX, FK-&gt;cobros.id]</text>
+<text class='attr' x='54' y='1296'>evento_id : bigint(20) unsigned [IX, FK-&gt;eventos.id]</text>
+<text class='attr' x='54' y='1315'>motivo_justificacion : varchar(500)</text>
+<text class='attr' x='54' y='1334'>documento_justificacion : varchar(255)</text>
+<text class='attr' x='54' y='1353'>motivo_anulacion : varchar(500)</text>
+<text class='attr' x='54' y='1372'>anulada_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='1391'>created_at : timestamp [NN]</text>
+<text class='attr' x='54' y='1410'>updated_at : timestamp [NN]</text>
+<rect class='box' x='698' y='1041' width='620' height='330'/>
+<rect class='head' x='698' y='1041' width='620' height='36'/>
+<text class='table' x='712' y='1065'>pagos_pendientes</text>
+<text class='meta' x='1232' y='1065'>14 cols</text>
+<text class='attr pk' x='712' y='1093'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='712' y='1112'>vecino_id : bigint(20) unsigned [IX, FK-&gt;vecinos.id, NN]</text>
+<text class='attr' x='712' y='1131'>periodo_anio : smallint(5) unsigned [IX, NN]</text>
+<text class='attr' x='712' y='1150'>periodo_mes : tinyint(3) unsigned [NN]</text>
+<text class='attr' x='712' y='1169'>monto_pendiente : decimal(8,2) [NN]</text>
+<text class='attr' x='712' y='1188'>estado : enum(&apos;pendiente&apos;,&apos;cobrado&apos;,&apos;condonado&apos;) [IX, NN]</text>
+<text class='attr' x='712' y='1207'>fecha_intento : date [NN]</text>
+<text class='attr' x='712' y='1226'>fecha_cobro : date</text>
+<text class='attr' x='712' y='1245'>motivo : varchar(500)</text>
+<text class='attr' x='712' y='1264'>jornada_id : bigint(20) unsigned [IX, FK-&gt;jornadas_cobro.id]</text>
+<text class='attr' x='712' y='1283'>registrado_por : bigint(20) unsigned [IX, FK-&gt;users.id, NN]</text>
+<text class='attr' x='712' y='1302'>cobro_id : bigint(20) unsigned [IX, FK-&gt;cobros.id]</text>
+<text class='attr' x='712' y='1321'>created_at : timestamp [NN]</text>
+<text class='attr' x='712' y='1340'>updated_at : timestamp [NN]</text>
+<rect class='box' x='698' y='1405' width='620' height='235'/>
+<rect class='head' x='698' y='1405' width='620' height='36'/>
+<text class='table' x='712' y='1429'>categorias_ingreso</text>
+<text class='meta' x='1232' y='1429'>9 cols</text>
+<text class='attr pk' x='712' y='1457'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='712' y='1476'>nombre : varchar(50) [UQ, NN]</text>
+<text class='attr' x='712' y='1495'>descripcion : varchar(255)</text>
+<text class='attr' x='712' y='1514'>es_manual : tinyint(1) [IX, NN]</text>
+<text class='attr' x='712' y='1533'>icono : varchar(50)</text>
+<text class='attr' x='712' y='1552'>color_hex : varchar(7)</text>
+<text class='attr' x='712' y='1571'>activa : tinyint(1) [IX, NN]</text>
+<text class='attr' x='712' y='1590'>created_at : timestamp [NN]</text>
+<text class='attr' x='712' y='1609'>updated_at : timestamp [NN]</text>
+<rect class='box' x='2014' y='1440' width='620' height='501'/>
+<rect class='head' x='2014' y='1440' width='620' height='36'/>
+<text class='table' x='2028' y='1464'>ingresos</text>
+<text class='meta' x='2548' y='1464'>23 cols</text>
+<text class='attr pk' x='2028' y='1492'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='2028' y='1511'>numero_serie : varchar(20) [UQ, NN]</text>
+<text class='attr' x='2028' y='1530'>categoria_id : int(10) unsigned [IX, FK-&gt;categorias_ingreso.id, NN]</text>
+<text class='attr' x='2028' y='1549'>vecino_id : bigint(20) unsigned [IX, FK-&gt;vecinos.id]</text>
+<text class='attr' x='2028' y='1568'>concepto : varchar(255) [NN]</text>
+<text class='attr' x='2028' y='1587'>descripcion : varchar(1000)</text>
+<text class='attr' x='2028' y='1606'>monto : decimal(10,2) [NN]</text>
+<text class='attr' x='2028' y='1625'>metodo_pago : enum(&apos;efectivo&apos;,&apos;transferencia&apos;,&apos;yape&apos;,&apos;plin&apos;,&apos;otro&apos;) [NN]</text>
+<text class='attr' x='2028' y='1644'>fecha_ingreso : date [IX, NN]</text>
+<text class='attr' x='2028' y='1663'>comprobante_archivo : varchar(500)</text>
+<text class='attr' x='2028' y='1682'>comprobante_nombre : varchar(150)</text>
+<text class='attr' x='2028' y='1701'>estado : enum(&apos;activo&apos;,&apos;anulado&apos;) [IX, NN]</text>
+<text class='attr' x='2028' y='1720'>motivo_anulacion : varchar(500)</text>
+<text class='attr' x='2028' y='1739'>anulado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='1758'>fecha_anulacion : timestamp</text>
+<text class='attr' x='2028' y='1777'>devolver_dinero : tinyint(1)</text>
+<text class='attr' x='2028' y='1796'>motivo_ultima_edicion : varchar(500)</text>
+<text class='attr' x='2028' y='1815'>editado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='1834'>fecha_ultima_edicion : timestamp</text>
+<text class='attr' x='2028' y='1853'>observaciones : varchar(500)</text>
+<text class='attr' x='2028' y='1872'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id, NN]</text>
+<text class='attr' x='2028' y='1891'>created_at : timestamp [NN]</text>
+<text class='attr' x='2028' y='1910'>updated_at : timestamp [NN]</text>
+<rect class='box' x='1356' y='1456' width='620' height='235'/>
+<rect class='head' x='1356' y='1456' width='620' height='36'/>
+<text class='table' x='1370' y='1480'>categorias_egreso</text>
+<text class='meta' x='1890' y='1480'>9 cols</text>
+<text class='attr pk' x='1370' y='1508'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='1370' y='1527'>nombre : varchar(50) [UQ, NN]</text>
+<text class='attr' x='1370' y='1546'>descripcion : varchar(255)</text>
+<text class='attr' x='1370' y='1565'>requiere_aprobacion : tinyint(1) [IX, NN]</text>
+<text class='attr' x='1370' y='1584'>icono : varchar(50)</text>
+<text class='attr' x='1370' y='1603'>color_hex : varchar(7)</text>
+<text class='attr' x='1370' y='1622'>activa : tinyint(1) [IX, NN]</text>
+<text class='attr' x='1370' y='1641'>created_at : timestamp [NN]</text>
+<text class='attr' x='1370' y='1660'>updated_at : timestamp [NN]</text>
+<rect class='box' x='40' y='1475' width='620' height='197'/>
+<rect class='head' x='40' y='1475' width='620' height='36'/>
+<text class='table' x='54' y='1499'>configuracion_egresos</text>
+<text class='meta' x='574' y='1499'>7 cols</text>
+<text class='attr pk' x='54' y='1527'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='54' y='1546'>clave : varchar(80) [UQ, NN]</text>
+<text class='attr' x='54' y='1565'>valor : varchar(255) [NN]</text>
+<text class='attr' x='54' y='1584'>descripcion : varchar(255)</text>
+<text class='attr' x='54' y='1603'>actualizado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='1622'>created_at : timestamp [NN]</text>
+<text class='attr' x='54' y='1641'>updated_at : timestamp [NN]</text>
+<rect class='box' x='698' y='1674' width='620' height='330'/>
+<rect class='head' x='698' y='1674' width='620' height='36'/>
+<text class='table' x='712' y='1698'>proveedores</text>
+<text class='meta' x='1232' y='1698'>14 cols</text>
+<text class='attr pk' x='712' y='1726'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='712' y='1745'>tipo : enum(&apos;persona&apos;,&apos;empresa&apos;) [IX, NN]</text>
+<text class='attr' x='712' y='1764'>ruc : varchar(11) [UQ]</text>
+<text class='attr' x='712' y='1783'>dni : varchar(8) [UQ]</text>
+<text class='attr' x='712' y='1802'>nombre : varchar(150) [IX, NN]</text>
+<text class='attr' x='712' y='1821'>telefono : varchar(30)</text>
+<text class='attr' x='712' y='1840'>email : varchar(150)</text>
+<text class='attr' x='712' y='1859'>direccion : varchar(255)</text>
+<text class='attr' x='712' y='1878'>activo : tinyint(1) [IX, NN]</text>
+<text class='attr' x='712' y='1897'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='712' y='1916'>updated_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='712' y='1935'>created_at : timestamp [NN]</text>
+<text class='attr' x='712' y='1954'>updated_at : timestamp [NN]</text>
+<text class='attr' x='712' y='1973'>deleted_at : timestamp [IX]</text>
+<rect class='box' x='40' y='1706' width='620' height='653'/>
+<rect class='head' x='40' y='1706' width='620' height='36'/>
+<text class='table' x='54' y='1730'>egresos</text>
+<text class='meta' x='574' y='1730'>31 cols</text>
+<text class='attr pk' x='54' y='1758'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='54' y='1777'>numero_serie : varchar(20) [UQ, NN]</text>
+<text class='attr' x='54' y='1796'>categoria_id : int(10) unsigned [IX, FK-&gt;categorias_egreso.id, NN]</text>
+<text class='attr' x='54' y='1815'>proveedor_id : bigint(20) unsigned [IX, FK-&gt;proveedores.id]</text>
+<text class='attr' x='54' y='1834'>concepto : varchar(255) [NN]</text>
+<text class='attr' x='54' y='1853'>descripcion : varchar(1000)</text>
+<text class='attr' x='54' y='1872'>monto : decimal(10,2) [NN]</text>
+<text class='attr' x='54' y='1891'>metodo_pago : enum(&apos;efectivo&apos;,&apos;transferencia&apos;,&apos;yape&apos;,&apos;plin&apos;,&apos;otro&apos;) [NN]</text>
+<text class='attr' x='54' y='1910'>fecha_egreso : date [IX, NN]</text>
+<text class='attr' x='54' y='1929'>comprobante_tipo : enum(&apos;boleta&apos;,&apos;factura&apos;,&apos;recibo&apos;,&apos;ticket&apos;,&apos;sin_comprobante&apos;,&apos;otro&apos;) [NN]</text>
+<text class='attr' x='54' y='1948'>comprobante_numero : varchar(50)</text>
+<text class='attr' x='54' y='1967'>comprobante_archivo : varchar(500)</text>
+<text class='attr' x='54' y='1986'>comprobante_nombre : varchar(150)</text>
+<text class='attr' x='54' y='2005'>estado : enum(&apos;pendiente_aprobacion&apos;,&apos;aprobado&apos;,&apos;rechazado&apos;,&apos;anulado&apos;) [IX, NN]</text>
+<text class='attr' x='54' y='2024'>requiere_aprobacion : tinyint(1) [IX, NN]</text>
+<text class='attr' x='54' y='2043'>aprobado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='2062'>fecha_aprobacion : timestamp</text>
+<text class='attr' x='54' y='2081'>rechazado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='2100'>fecha_rechazo : timestamp</text>
+<text class='attr' x='54' y='2119'>motivo_rechazo : varchar(500)</text>
+<text class='attr' x='54' y='2138'>motivo_anulacion : varchar(500)</text>
+<text class='attr' x='54' y='2157'>anulado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='2176'>fecha_anulacion : timestamp</text>
+<text class='attr' x='54' y='2195'>devolver_dinero : tinyint(1)</text>
+<text class='attr' x='54' y='2214'>motivo_ultima_edicion : varchar(500)</text>
+<text class='attr' x='54' y='2233'>editado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='54' y='2252'>fecha_ultima_edicion : timestamp</text>
+<text class='attr' x='54' y='2271'>observaciones : varchar(500)</text>
+<text class='attr' x='54' y='2290'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id, NN]</text>
+<text class='attr' x='54' y='2309'>created_at : timestamp [NN]</text>
+<text class='attr' x='54' y='2328'>updated_at : timestamp [NN]</text>
+<rect class='box' x='1356' y='1725' width='620' height='1052'/>
+<rect class='head' x='1356' y='1725' width='620' height='36'/>
+<text class='table' x='1370' y='1749'>reportes_mensuales</text>
+<text class='meta' x='1890' y='1749'>52 cols</text>
+<text class='attr pk' x='1370' y='1777'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='1370' y='1796'>periodo_anio : smallint(5) unsigned [IX, NN]</text>
+<text class='attr' x='1370' y='1815'>periodo_mes : tinyint(3) unsigned [NN]</text>
+<text class='attr' x='1370' y='1834'>fecha_inicio_periodo : date [IX, NN]</text>
+<text class='attr' x='1370' y='1853'>fecha_fin_periodo : date [NN]</text>
+<text class='attr' x='1370' y='1872'>estado : enum(&apos;en_proceso&apos;,&apos;pendiente_aprobacion&apos;,&apos;aprobado&apos;,&apos;rechazado&apos;) [IX, NN]</text>
+<text class='attr' x='1370' y='1891'>total_ingresos : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='1910'>num_cobros : int(10) unsigned [NN]</text>
+<text class='attr' x='1370' y='1929'>num_ingresos_manuales : int(10) unsigned [NN]</text>
+<text class='attr' x='1370' y='1948'>total_cuotas : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='1967'>total_multas_cobradas : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='1986'>total_cuotas_extraordinarias : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2005'>total_donaciones : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2024'>total_otros_ingresos : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2043'>total_egresos : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2062'>num_egresos : int(10) unsigned [NN]</text>
+<text class='attr' x='1370' y='2081'>total_materiales : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2100'>total_personal : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2119'>total_mantenimiento : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2138'>total_combustible : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2157'>total_servicios : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2176'>total_otros_egresos : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2195'>balance_neto : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2214'>num_vecinos_total : int(10) unsigned [NN]</text>
+<text class='attr' x='1370' y='2233'>num_vecinos_al_dia : int(10) unsigned [NN]</text>
+<text class='attr' x='1370' y='2252'>num_vecinos_morosos : int(10) unsigned [NN]</text>
+<text class='attr' x='1370' y='2271'>deuda_acumulada : decimal(12,2) [NN]</text>
+<text class='attr' x='1370' y='2290'>porcentaje_morosidad : decimal(5,2) [NN]</text>
+<text class='attr' x='1370' y='2309'>delta_ingresos : decimal(12,2)</text>
+<text class='attr' x='1370' y='2328'>delta_egresos : decimal(12,2)</text>
+<text class='attr' x='1370' y='2347'>delta_balance : decimal(12,2)</text>
+<text class='attr' x='1370' y='2366'>delta_morosos : int(11)</text>
+<text class='attr' x='1370' y='2385'>desglose_ingresos_json : longtext</text>
+<text class='attr' x='1370' y='2404'>desglose_egresos_json : longtext</text>
+<text class='attr' x='1370' y='2423'>top_morosos_json : longtext</text>
+<text class='attr' x='1370' y='2442'>proyeccion_siguiente_mes_json : longtext</text>
+<text class='attr' x='1370' y='2461'>fecha_generacion : timestamp [IX, NN]</text>
+<text class='attr' x='1370' y='2480'>generado_por_sistema : tinyint(1) [NN]</text>
+<text class='attr' x='1370' y='2499'>es_reporte_parcial : tinyint(1) [NN]</text>
+<text class='attr' x='1370' y='2518'>aprobado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='1370' y='2537'>fecha_aprobacion : timestamp</text>
+<text class='attr' x='1370' y='2556'>observaciones_admin : varchar(2000)</text>
+<text class='attr' x='1370' y='2575'>rechazado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='1370' y='2594'>fecha_rechazo : timestamp</text>
+<text class='attr' x='1370' y='2613'>motivo_rechazo : varchar(2000)</text>
+<text class='attr' x='1370' y='2632'>areas_revisar_json : longtext</text>
+<text class='attr' x='1370' y='2651'>version : tinyint(3) unsigned [NN]</text>
+<text class='attr' x='1370' y='2670'>ruta_pdf_borrador : varchar(500)</text>
+<text class='attr' x='1370' y='2689'>ruta_pdf_oficial : varchar(500)</text>
+<text class='attr' x='1370' y='2708'>hash_pdf_oficial : varchar(64)</text>
+<text class='attr' x='1370' y='2727'>created_at : timestamp [NN]</text>
+<text class='attr' x='1370' y='2746'>updated_at : timestamp [NN]</text>
+<rect class='box' x='2014' y='1975' width='620' height='273'/>
+<rect class='head' x='2014' y='1975' width='620' height='36'/>
+<text class='table' x='2028' y='1999'>tipos_evento</text>
+<text class='meta' x='2548' y='1999'>11 cols</text>
+<text class='attr pk' x='2028' y='2027'>id : int(10) unsigned [PK, NN]</text>
+<text class='attr' x='2028' y='2046'>nombre : varchar(50) [UQ, NN]</text>
+<text class='attr' x='2028' y='2065'>descripcion : varchar(255)</text>
+<text class='attr' x='2028' y='2084'>icono : varchar(50)</text>
+<text class='attr' x='2028' y='2103'>color_hex : varchar(7)</text>
+<text class='attr' x='2028' y='2122'>es_obligatorio_default : tinyint(1) [NN]</text>
+<text class='attr' x='2028' y='2141'>genera_multa_default : tinyint(1) [NN]</text>
+<text class='attr' x='2028' y='2160'>multa_id_default : int(10) unsigned [IX, FK-&gt;multas.id]</text>
+<text class='attr' x='2028' y='2179'>activa : tinyint(1) [IX, NN]</text>
+<text class='attr' x='2028' y='2198'>created_at : timestamp [NN]</text>
+<text class='attr' x='2028' y='2217'>updated_at : timestamp [NN]</text>
+<rect class='box' x='698' y='2038' width='620' height='672'/>
+<rect class='head' x='698' y='2038' width='620' height='36'/>
+<text class='table' x='712' y='2062'>eventos</text>
+<text class='meta' x='1232' y='2062'>32 cols</text>
+<text class='attr pk' x='712' y='2090'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='712' y='2109'>codigo : varchar(15) [UQ, NN]</text>
+<text class='attr' x='712' y='2128'>tipo_evento_id : int(10) unsigned [IX, FK-&gt;tipos_evento.id, NN]</text>
+<text class='attr' x='712' y='2147'>titulo : varchar(150) [NN]</text>
+<text class='attr' x='712' y='2166'>descripcion : text</text>
+<text class='attr' x='712' y='2185'>fecha_evento : date [IX, NN]</text>
+<text class='attr' x='712' y='2204'>hora_inicio : time [NN]</text>
+<text class='attr' x='712' y='2223'>duracion_minutos : int(10) unsigned [NN]</text>
+<text class='attr' x='712' y='2242'>lugar : varchar(255) [NN]</text>
+<text class='attr' x='712' y='2261'>es_obligatorio : tinyint(1) [NN]</text>
+<text class='attr' x='712' y='2280'>multa_id : int(10) unsigned [IX, FK-&gt;multas.id]</text>
+<text class='attr' x='712' y='2299'>convocatoria_tipo : enum(&apos;todos&apos;,&apos;por_categoria&apos;,&apos;manual&apos;) [NN]</text>
+<text class='attr' x='712' y='2318'>categorias_convocadas_json : longtext</text>
+<text class='attr' x='712' y='2337'>total_convocados : int(10) unsigned [NN]</text>
+<text class='attr' x='712' y='2356'>estado : enum(&apos;programado&apos;,&apos;lista_pendiente&apos;,&apos;realizado&apos;,&apos;cancelado&apos;) [IX, NN]</text>
+<text class='attr' x='712' y='2375'>notificar_email : tinyint(1) [NN]</text>
+<text class='attr' x='712' y='2394'>notificar_sms : tinyint(1) [NN]</text>
+<text class='attr' x='712' y='2413'>convocatoria_pdf_path : varchar(500)</text>
+<text class='attr' x='712' y='2432'>confirmada_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='712' y='2451'>fecha_confirmacion : timestamp</text>
+<text class='attr' x='712' y='2470'>multas_aplicadas_count : int(10) unsigned [NN]</text>
+<text class='attr' x='712' y='2489'>monto_multas_aplicadas : decimal(10,2) [NN]</text>
+<text class='attr' x='712' y='2508'>motivo_cancelacion : varchar(500)</text>
+<text class='attr' x='712' y='2527'>cancelado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='712' y='2546'>fecha_cancelacion : timestamp</text>
+<text class='attr' x='712' y='2565'>created_by : bigint(20) unsigned [IX, FK-&gt;users.id, NN]</text>
+<text class='attr' x='712' y='2584'>updated_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='712' y='2603'>deleted_by : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='712' y='2622'>motivo_eliminacion : varchar(500)</text>
+<text class='attr' x='712' y='2641'>created_at : timestamp [NN]</text>
+<text class='attr' x='712' y='2660'>updated_at : timestamp [NN]</text>
+<text class='attr' x='712' y='2679'>deleted_at : timestamp [IX]</text>
+<rect class='box' x='2014' y='2282' width='620' height='444'/>
+<rect class='head' x='2014' y='2282' width='620' height='36'/>
+<text class='table' x='2028' y='2306'>asistencias</text>
+<text class='meta' x='2548' y='2306'>20 cols</text>
+<text class='attr pk' x='2028' y='2334'>id : bigint(20) unsigned [PK, NN]</text>
+<text class='attr' x='2028' y='2353'>evento_id : bigint(20) unsigned [IX, FK-&gt;eventos.id, NN]</text>
+<text class='attr' x='2028' y='2372'>vecino_id : bigint(20) unsigned [IX, FK-&gt;vecinos.id, NN]</text>
+<text class='attr' x='2028' y='2391'>estado : enum(&apos;no_marcado&apos;,&apos;presente&apos;,&apos;tarde&apos;,&apos;justificado&apos;,&apos;ausente&apos;) [IX, NN]</text>
+<text class='attr' x='2028' y='2410'>hora_llegada : time</text>
+<text class='attr' x='2028' y='2429'>motivo_justificacion : varchar(1000)</text>
+<text class='attr' x='2028' y='2448'>documento_justificacion : varchar(500)</text>
+<text class='attr' x='2028' y='2467'>observaciones : varchar(500)</text>
+<text class='attr' x='2028' y='2486'>justificacion_aprobada : tinyint(1)</text>
+<text class='attr' x='2028' y='2505'>aprobada_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='2524'>fecha_aprobacion : timestamp</text>
+<text class='attr' x='2028' y='2543'>motivo_rechazo_just : varchar(500)</text>
+<text class='attr' x='2028' y='2562'>multa_aplicada_id : bigint(20) unsigned [IX, FK-&gt;multas_aplicadas.id]</text>
+<text class='attr' x='2028' y='2581'>registrada_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='2600'>fecha_registro : timestamp</text>
+<text class='attr' x='2028' y='2619'>motivo_ultima_edicion : varchar(500)</text>
+<text class='attr' x='2028' y='2638'>editado_por : bigint(20) unsigned [IX, FK-&gt;users.id]</text>
+<text class='attr' x='2028' y='2657'>fecha_ultima_edicion : timestamp</text>
+<text class='attr' x='2028' y='2676'>created_at : timestamp [NN]</text>
+<text class='attr' x='2028' y='2695'>updated_at : timestamp [NN]</text>
+</svg>
