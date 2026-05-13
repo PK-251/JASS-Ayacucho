@@ -24,4 +24,9 @@ class Asistencia extends Model
     {
         return $this->belongsTo(Vecino::class, 'vecino_id');
     }
+
+    public function multa()
+    {
+        return $this->belongsTo(MultaAplicada::class, 'multa_aplicada_id');
+    }
 }

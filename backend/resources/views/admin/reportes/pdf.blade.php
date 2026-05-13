@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><style>body{font-family:DejaVu Sans,sans-serif;color:#183247}.title{color:#087f95;font-size:26px;font-weight:bold}.box{border:1px solid #b7edf4;padding:16px;margin-bottom:12px}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #d9f2f6;padding:8px;text-align:left}.right{text-align:right}.big{font-size:20px;font-weight:bold;color:#087f95}</style></head><body>
+<div class="title">Reporte Mensual {{ $reporte->periodo_anio }}-{{ str_pad($reporte->periodo_mes, 2, '0', STR_PAD_LEFT) }}</div>
+<p>J.A.S.S. QUILCATA · Estado: {{ str_replace('_',' ', ucfirst($reporte->estado)) }}</p>
+<div class="box"><table><tr><th>Total ingresos</th><td class="right big">S/{{ number_format((float) $reporte->total_ingresos, 2) }}</td></tr><tr><th>Total egresos</th><td class="right big">S/{{ number_format((float) $reporte->total_egresos, 2) }}</td></tr><tr><th>Balance neto</th><td class="right big">S/{{ number_format((float) $reporte->balance_neto, 2) }}</td></tr><tr><th>Morosidad</th><td class="right">{{ number_format((float) $reporte->porcentaje_morosidad, 1) }}%</td></tr></table></div>
+<div class="box"><h3>Top morosos</h3><table><tr><th>Codigo</th><th>Nombre</th><th class="right">Deuda</th></tr>@foreach (($reporte->top_morosos_json ?? []) as $moroso)<tr><td>{{ $moroso['codigo'] ?? '-' }}</td><td>{{ $moroso['nombre'] ?? '-' }}</td><td class="right">S/{{ number_format((float) ($moroso['deuda'] ?? 0), 2) }}</td></tr>@endforeach</table></div>
+</body></html>

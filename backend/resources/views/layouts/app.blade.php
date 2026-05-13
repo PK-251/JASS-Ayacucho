@@ -220,6 +220,7 @@
             .topbar { align-items: stretch; flex-direction: column; }
         }
     </style>
+    @stack('styles')
 </head>
 <body>
 <div class="app-shell">
