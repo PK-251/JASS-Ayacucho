@@ -169,6 +169,8 @@ class EgresoController extends Controller
             'fecha_ultima_edicion' => now(),
         ]);
 
+        $this->audit('UPDATE', $egreso, $before, $data['motivo_ultima_edicion']);
+
         return redirect()->route('admin.egresos.show', $egreso)->with('success', 'Egreso actualizado correctamente.');
     }
 
@@ -188,6 +190,8 @@ class EgresoController extends Controller
             'fecha_rechazo' => null,
         ]);
 
+        $this->audit('UPDATE', $egreso, $before, 'Aprobacion de egreso');
+
         return redirect()->route('admin.egresos.show', $egreso)->with('success', 'Egreso aprobado correctamente.');
     }
 
@@ -206,6 +210,8 @@ class EgresoController extends Controller
             'fecha_rechazo' => now(),
             'motivo_rechazo' => $data['motivo_rechazo'],
         ]);
+
+        $this->audit('UPDATE', $egreso, $before, $data['motivo_rechazo']);
 
         return redirect()->route('admin.egresos.index')->with('success', 'Egreso rechazado correctamente.');
     }
@@ -229,6 +235,8 @@ class EgresoController extends Controller
             'fecha_anulacion' => now(),
             'devolver_dinero' => (bool) ($data['devolver_dinero'] ?? false),
         ]);
+
+        $this->audit('UPDATE', $egreso, $before, $data['motivo_anulacion']);
 
         return redirect()->route('admin.egresos.index')->with('success', 'Egreso anulado correctamente.');
     }

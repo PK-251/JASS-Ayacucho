@@ -85,7 +85,7 @@ class CobroController extends Controller
             ->get();
 
         $usuario = $usuarioId ? Vecino::with('categoria')->whereNull('deleted_at')->find($usuarioId) : null;
-        $desglose = $usuario ? $this->desglose($usuario) : null;
+        $desglose = $usuario ? $this->desglose($usuario, $anio, $mes) : null;
 
         return view('admin.cobros.create', [
             'usuarios' => $usuarios,
@@ -109,7 +109,7 @@ class CobroController extends Controller
         ]);
 
         $vecino = Vecino::with('categoria')->findOrFail($data['vecino_id']);
-        $desglose = $this->desglose($vecino);
+        $desglose = $this->desglose($vecino, (int) $data['periodo_anio'], (int) $data['periodo_mes']);
         $total = $this->money($desglose['total']);
         $recibido = $this->money($data['monto_recibido']);
 
@@ -256,7 +256,7 @@ class CobroController extends Controller
         return $pdf->download($cobro->numero_serie.'.pdf');
     }
 
-    private function desglose(Vecino $vecino): array
+    private function desglose(Vecino $vecino, ?int $anio = null, ?int $mes = null): array
     {
         $tarifa = Tarifa::where('categoria_id', $vecino->categoria_id)
             ->where('activa', true)
@@ -266,7 +266,16 @@ class CobroController extends Controller
             ?? Tarifa::where('categoria_id', $vecino->categoria_id)->latest('fecha_vigencia_inicio')->first();
 
         $cuota = $this->money($tarifa?->monto ?? 0);
-        $deudaCuotas = $this->money(PagoPendiente::where('vecino_id', $vecino->id)->where('estado', 'pendiente')->sum('monto_pendiente'));
+        $pendientesQuery = PagoPendiente::where('vecino_id', $vecino->id)->where('estado', 'pendiente');
+
+        if ($anio && $mes) {
+            $pendientesQuery->where(function ($query) use ($anio, $mes) {
+                $query->where('periodo_anio', '<>', $anio)
+                    ->orWhere('periodo_mes', '<>', $mes);
+            });
+        }
+
+        $deudaCuotas = $this->money($pendientesQuery->sum('monto_pendiente'));
         $deudaMultas = $this->money(MultaAplicada::where('vecino_id', $vecino->id)->where('estado', 'pendiente')->sum('monto_aplicado'));
 
         return [
@@ -280,14 +289,11 @@ class CobroController extends Controller
 
     private function nextSerie(int $year): string
     {
-        $last = Cobro::where('numero_serie', 'like', "QLC-{$year}-%")
-            ->orderByDesc('id')
-            ->value('numero_serie');
+        $lastNumber = Cobro::where('numero_serie', 'like', "QLC-{$year}-%")
+            ->selectRaw('MAX(CAST(RIGHT(numero_serie, 4) AS UNSIGNED)) as last_number')
+            ->value('last_number');
 
-        $next = 1;
-        if ($last && preg_match('/(\d{4})$/', $last, $matches)) {
-            $next = ((int) $matches[1]) + 1;
-        }
+        $next = ((int) $lastNumber) + 1;
 
         return 'QLC-'.$year.'-'.str_pad((string) $next, 4, '0', STR_PAD_LEFT);
     }

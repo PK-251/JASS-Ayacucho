@@ -82,7 +82,9 @@ class AsistenciaController extends Controller
     public function show(Evento $evento): View
     {
         $evento->load('tipo');
-        $this->ensureList($evento);
+        if (! in_array($evento->estado, ['realizado', 'cancelado'], true)) {
+            $this->ensureList($evento);
+        }
 
         $asistencias = Asistencia::with('vecino', 'multa')
             ->where('evento_id', $evento->id)

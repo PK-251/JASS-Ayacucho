@@ -8,6 +8,7 @@ use App\Models\Multa;
 use App\Models\Tarifa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -110,13 +111,24 @@ class MultaTarifaController extends Controller
             'descripcion' => ['nullable', 'string', 'max:500'],
         ]);
 
+        $vigente = Tarifa::where('categoria_id', $data['categoria_id'])
+            ->where('activa', true)
+            ->whereNull('fecha_vigencia_fin')
+            ->first();
+
+        if ($vigente && Carbon::parse($data['fecha_vigencia_inicio'])->lte($vigente->fecha_vigencia_inicio)) {
+            return back()
+                ->withInput()
+                ->withErrors(['fecha_vigencia_inicio' => 'La nueva fecha debe ser posterior al inicio de la tarifa vigente.']);
+        }
+
         DB::transaction(function () use ($data) {
             Tarifa::where('categoria_id', $data['categoria_id'])
                 ->where('activa', true)
                 ->whereNull('fecha_vigencia_fin')
                 ->update([
                     'activa' => false,
-                    'fecha_vigencia_fin' => date('Y-m-d', strtotime($data['fecha_vigencia_inicio'].' -1 day')),
+                    'fecha_vigencia_fin' => Carbon::parse($data['fecha_vigencia_inicio'])->subDay()->toDateString(),
                     'updated_by' => auth()->id(),
                 ]);
 

@@ -55,7 +55,7 @@
     <div class="col-md-6">
         <label class="form-label fw-semibold">Estado</label>
         <select name="estado" class="form-select" required>
-            @foreach (['activo' => 'Activo', 'suspendido' => 'Suspendido', 'cortado' => 'Cortado', 'baja' => 'Baja'] as $value => $label)
+            @foreach (['activo' => 'Activo', 'suspendido' => 'Suspendido', 'cortado' => 'Cortado'] as $value => $label)
                 <option value="{{ $value }}" @selected(old('estado', $usuario->estado) === $value)>{{ $label }}</option>
             @endforeach
         </select>
@@ -75,7 +75,8 @@
 
     <div class="col-md-6">
         <label class="form-label fw-semibold">Fecha de corte</label>
-        <input type="date" name="fecha_corte" value="{{ old('fecha_corte', optional($usuario->fecha_corte)->format('Y-m-d')) }}" class="form-control">
+        <input type="date" name="fecha_corte" value="{{ old('fecha_corte', optional($usuario->fecha_corte)->format('Y-m-d')) }}" class="form-control @error('fecha_corte') is-invalid @enderror">
+        @error('fecha_corte')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
     <div class="col-md-6">
         <label class="form-label fw-semibold">Motivo de estado</label>

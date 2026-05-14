@@ -135,6 +135,19 @@ class ReporteController extends Controller
 
         $totalCobros = (float) (clone $cobros)->sum('monto_recibido');
         $totalManual = (float) (clone $ingresosManual)->sum('monto');
+        $totalExtraordinarias = (float) DB::table('ingresos')
+            ->whereYear('fecha_ingreso', $anio)
+            ->whereMonth('fecha_ingreso', $mes)
+            ->where('estado', 'activo')
+            ->where('concepto', 'like', '%extraordinaria%')
+            ->sum('monto');
+        $totalDonaciones = (float) DB::table('ingresos')
+            ->whereYear('fecha_ingreso', $anio)
+            ->whereMonth('fecha_ingreso', $mes)
+            ->where('estado', 'activo')
+            ->where('concepto', 'like', '%don%')
+            ->sum('monto');
+        $totalOtrosManual = max(0, $totalManual - $totalExtraordinarias - $totalDonaciones);
         $totalIngresos = $totalCobros + $totalManual;
         $totalEgresos = (float) (clone $egresos)->sum('monto');
         $balance = $totalIngresos - $totalEgresos;
@@ -171,9 +184,9 @@ class ReporteController extends Controller
             'num_ingresos_manuales' => (clone $ingresosManual)->count(),
             'total_cuotas' => (float) DB::table('cobros')->whereYear('fecha_cobro', $anio)->whereMonth('fecha_cobro', $mes)->where('estado', 'pagado')->sum('monto_cuota'),
             'total_multas_cobradas' => (float) DB::table('cobros')->whereYear('fecha_cobro', $anio)->whereMonth('fecha_cobro', $mes)->where('estado', 'pagado')->sum('monto_multas'),
-            'total_cuotas_extraordinarias' => (float) DB::table('ingresos')->whereYear('fecha_ingreso', $anio)->whereMonth('fecha_ingreso', $mes)->where('estado', 'activo')->where('concepto', 'like', '%extraordinaria%')->sum('monto'),
-            'total_donaciones' => (float) DB::table('ingresos')->whereYear('fecha_ingreso', $anio)->whereMonth('fecha_ingreso', $mes)->where('estado', 'activo')->where('concepto', 'like', '%don%')->sum('monto'),
-            'total_otros_ingresos' => max(0, $totalManual),
+            'total_cuotas_extraordinarias' => $totalExtraordinarias,
+            'total_donaciones' => $totalDonaciones,
+            'total_otros_ingresos' => $totalOtrosManual,
             'total_egresos' => $totalEgresos,
             'num_egresos' => (clone $egresos)->count(),
             'total_materiales' => $this->sumEgresoCategoria($anio, $mes, 'Materiales'),

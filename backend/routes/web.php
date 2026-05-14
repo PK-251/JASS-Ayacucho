@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\ReporteController;
 use App\Http\Controllers\Admin\AsistenciaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Operator\DashboardController as OperatorDashboardController;
+use App\Http\Controllers\Operator\CobroController as OperatorCobroController;
+use App\Http\Controllers\Operator\AsistenciaController as OperatorAsistenciaController;
 use App\Http\Controllers\Admin\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,5 +65,15 @@ Route::middleware(['auth', 'role:Administrador'])->prefix('admin')->name('admin.
 });
 
 Route::middleware(['auth', 'role:Operador'])->prefix('operador')->name('operator.')->group(function () {
-    Route::get('/inicio', OperatorDashboardController::class)->name('dashboard');
+    Route::get('/inicio', OperatorDashboardController::class)->name('dashboard');
+    Route::get('/cobros', [OperatorCobroController::class, 'index'])->name('cobros.index');
+    Route::post('/cobros/iniciar', [OperatorCobroController::class, 'iniciar'])->name('cobros.iniciar');
+    Route::post('/cobros', [OperatorCobroController::class, 'store'])->name('cobros.store');
+    Route::get('/cobros/{cobro}', [OperatorCobroController::class, 'show'])->name('cobros.show');
+    Route::post('/cobros/{vecino}/pendiente', [OperatorCobroController::class, 'pendiente'])->name('cobros.pendiente');
+    Route::post('/cobros/cerrar/jornada', [OperatorCobroController::class, 'cerrar'])->name('cobros.cerrar');
+    Route::get('/asistencia', [OperatorAsistenciaController::class, 'index'])->name('asistencia.index');
+    Route::get('/asistencia/{evento}', [OperatorAsistenciaController::class, 'show'])->name('asistencia.show');
+    Route::patch('/asistencia/marca/{asistencia}', [OperatorAsistenciaController::class, 'update'])->name('asistencia.update');
+    Route::post('/asistencia/{evento}/confirmar', [OperatorAsistenciaController::class, 'confirmar'])->name('asistencia.confirmar');
 });

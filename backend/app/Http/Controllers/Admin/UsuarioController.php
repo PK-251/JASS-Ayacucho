@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\RequiredIf;
 use Illuminate\View\View;
 
 class UsuarioController extends Controller
@@ -134,9 +135,9 @@ class UsuarioController extends Controller
             'telefono' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:150'],
             'categoria_id' => ['required', 'exists:categorias_servicio,id'],
-            'estado' => ['required', Rule::in(['activo', 'suspendido', 'cortado', 'baja'])],
+            'estado' => ['required', Rule::in(['activo', 'suspendido', 'cortado'])],
             'numero_medidor' => ['nullable', 'string', 'max:30', Rule::unique('vecinos', 'numero_medidor')->ignore($id)],
-            'fecha_corte' => ['nullable', 'date'],
+            'fecha_corte' => [new RequiredIf($request->input('estado') === 'cortado'), 'nullable', 'date'],
             'motivo_estado' => ['nullable', 'string', 'max:500'],
         ]);
     }
