@@ -57,3 +57,20 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Docker / Nginx local
+
+La app puede levantarse con PHP-FPM, Nginx, MariaDB y phpMyAdmin usando Docker Compose.
+
+```powershell
+cd "C:\Users\poker\Desktop\Proyecto aguaa\backend"
+docker compose up -d --build
+```
+
+URLs principales:
+
+- App: http://127.0.0.1:8080/login
+- phpMyAdmin: http://127.0.0.1:8081
+- MariaDB: 127.0.0.1:3307
+
+Para cargar la base real de XAMPP, exporta `jass_quilcata` a `docker/mariadb/init/01-jass_quilcata.sql` antes del primer arranque. La guia completa esta en `docs/docker-nginx.md`.

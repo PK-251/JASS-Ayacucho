@@ -11,14 +11,14 @@
             <h1 class="page-title">Modificar cuota base</h1>
             <div class="page-subtitle">Registra una nueva tarifa vigente por categoria.</div>
         </div>
-        <a class="btn btn-outline-secondary" href="{{ route('admin.multas.index') }}">Volver</a>
+        <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.multas.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
     </div>
 
     @if ($errors->any())
         <div class="alert alert-danger border-0 shadow-sm"><strong>Revisa el formulario.</strong><ul class="mb-0 mt-2">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
     @endif
 
-    <form method="POST" action="{{ route('admin.tarifas.store') }}" class="panel p-4" style="max-width:760px">
+    <form method="POST" action="{{ route('admin.tarifas.store') }}" class="panel p-4 form-card" style="max-width:760px">
         @csrf
         <div class="alert alert-warning border-0">Este cambio afectara los cobros futuros de la categoria seleccionada.</div>
         <div class="row g-3">
@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Nuevo valor (S/)</label>
-                <input class="form-control" name="monto" value="{{ old('monto') }}" placeholder="0.00" required>
+                <input class="form-control" type="number" min="0.01" step="0.01" name="monto" value="{{ old('monto') }}" placeholder="0.00" required>
             </div>
             <div class="col-md-6">
                 <label class="form-label fw-semibold">Fecha de vigencia</label>
@@ -48,6 +48,6 @@
                 <textarea class="form-control" name="descripcion" rows="2">{{ old('descripcion') }}</textarea>
             </div>
         </div>
-        <div class="d-flex justify-content-end gap-2 mt-4"><a class="btn btn-outline-secondary" href="{{ route('admin.multas.index') }}">Cancelar</a><button class="btn btn-aqua px-4">Aplicar cambio</button></div>
+        <div class="form-actions"><a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.multas.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Cancelar</a><button class="btn btn-aqua btn-icon px-4">Aplicar cambio</button></div>
     </form>
 @endsection

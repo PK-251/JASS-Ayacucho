@@ -16,13 +16,14 @@
         <h1 class="page-title">{{ $evento->titulo }}</h1>
         <div class="page-subtitle">{{ $evento->fecha_evento?->format('d/m/Y') }} · {{ substr($evento->hora_inicio, 0, 5) }} · {{ $evento->lugar }}</div>
     </div>
-    <div class="d-flex gap-2 flex-wrap">
-        <a class="btn btn-outline-secondary" href="{{ route('admin.asistencia.index') }}">Volver</a>
+    <div class="page-actions">
+        <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.asistencia.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
+        <a class="btn btn-outline-info btn-icon" href="{{ route('admin.asistencia.pdf', $evento) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>Exportar PDF</a>
         @if ($evento->estado === 'programado')
-            <form method="POST" action="{{ route('admin.asistencia.generar-lista', $evento) }}">@csrf<button class="btn btn-aqua">Generar lista</button></form>
+            <form method="POST" action="{{ route('admin.asistencia.generar-lista', $evento) }}">@csrf<button class="btn btn-aqua btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Generar lista</button></form>
         @endif
         @if ($canEdit)
-            <form method="POST" action="{{ route('admin.asistencia.confirmar', $evento) }}" onsubmit="return confirm('Se confirmara la lista y se aplicaran multas a los ausentes. ¿Continuar?')">@csrf<button class="btn btn-success">Confirmar y aplicar multas</button></form>
+            <form method="POST" action="{{ route('admin.asistencia.confirmar', $evento) }}" onsubmit="return confirm('Se confirmara la lista y se aplicaran multas a los ausentes. ¿Continuar?')">@csrf<button class="btn btn-success btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></svg></span>Confirmar y aplicar multas</button></form>
         @endif
     </div>
 </div>

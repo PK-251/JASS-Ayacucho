@@ -289,16 +289,14 @@ class EgresoController extends Controller
 
     private function audit(string $operation, Egreso $egreso, ?array $before, ?string $reason): void
     {
-        DB::table('audit_logs')->insert([
-            'tabla' => 'egresos',
-            'registro_id' => $egreso->id,
-            'operacion' => $operation,
-            'usuario_id' => auth()->id(),
-            'usuario_nombre' => auth()->user()?->full_name,
-            'datos_anteriores_json' => $before ? json_encode($before, JSON_UNESCAPED_UNICODE) : null,
-            'datos_nuevos_json' => json_encode($egreso->fresh()->only(['numero_serie', 'categoria_id', 'proveedor_id', 'concepto', 'monto', 'metodo_pago', 'fecha_egreso', 'estado']), JSON_UNESCAPED_UNICODE),
-            'razon_cambio' => $reason,
-            'timestamp' => now(),
+        DB::statement('CALL sp_audit_log(?, ?, ?, ?, ?, ?, ?)', [
+            'egresos',
+            $egreso->id,
+            $operation,
+            auth()->id(),
+            $reason,
+            $before ? json_encode($before, JSON_UNESCAPED_UNICODE) : null,
+            json_encode($egreso->fresh()->only(['numero_serie', 'categoria_id', 'proveedor_id', 'concepto', 'monto', 'metodo_pago', 'fecha_egreso', 'estado']), JSON_UNESCAPED_UNICODE),
         ]);
     }
 }

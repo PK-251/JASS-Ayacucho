@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <form method="POST" action="{{ route('admin.usuarios.store') }}" class="panel p-4">
+    <form method="POST" action="{{ route('admin.usuarios.store') }}" class="panel p-4 form-card">
         @csrf
         @include('admin.usuarios._form', ['buttonText' => 'Guardar Usuario'])
     </form>

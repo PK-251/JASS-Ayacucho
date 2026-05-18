@@ -11,9 +11,9 @@
             <h1 class="page-title">{{ $usuario->full_name }}</h1>
             <div class="page-subtitle">Detalle del usuario del padron.</div>
         </div>
-        <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary" href="{{ route('admin.usuarios.index') }}">Volver</a>
-            <a class="btn btn-aqua" href="{{ route('admin.usuarios.edit', $usuario) }}">Editar</a>
+        <div class="page-actions">
+            <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.usuarios.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
+            <a class="btn btn-aqua btn-icon" href="{{ route('admin.usuarios.edit', $usuario) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/></svg></span>Editar</a>
         </div>
     </div>
 
@@ -41,7 +41,7 @@
                 </dl>
             </section>
 
-            <section class="panel p-4">
+            <section class="panel p-4 form-card">
                 <h2 class="h5 fw-bold mb-3 text-danger">Dar de baja</h2>
                 <form method="POST" action="{{ route('admin.usuarios.destroy', $usuario) }}" onsubmit="return confirm('Confirmar baja del usuario?')">
                     @csrf

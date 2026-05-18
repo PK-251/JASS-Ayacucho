@@ -24,7 +24,7 @@
                 <h2 class="h4 fw-bold mb-1">{{ $pendiente->titulo }}</h2>
                 <div class="text-secondary">{{ $pendiente->fecha_evento?->format('d/m/Y') }} · {{ $pendiente->lugar }} · {{ $pendiente->total_convocados }} convocados</div>
             </div>
-            <a class="btn btn-aqua btn-lg" href="{{ route('operator.asistencia.show', $pendiente) }}">Pasar lista ahora</a>
+            <a class="btn btn-aqua btn-icon btn-lg" href="{{ route('operator.asistencia.show', $pendiente) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></svg></span>Pasar lista ahora</a>
         </div>
     </section>
 @endif
@@ -49,7 +49,7 @@
                     <td>{{ $evento->lugar }}</td>
                     <td>{{ $evento->total_convocados }}</td>
                     <td><span class="badge {{ $evento->estado === 'realizado' ? 'badge-soft' : 'badge-warning-soft' }}">{{ str_replace('_', ' ', ucfirst($evento->estado)) }}</span></td>
-                    <td><a class="btn btn-sm btn-outline-info" href="{{ route('operator.asistencia.show', $evento) }}">Ver lista</a></td>
+                    <td><a class="btn btn-sm btn-outline-info btn-icon" href="{{ route('operator.asistencia.show', $evento) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>Ver lista</a></td>
                 </tr>
             @endforeach
             </tbody>

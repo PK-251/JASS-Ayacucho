@@ -212,16 +212,14 @@ class IngresoController extends Controller
 
     private function audit(string $operation, Ingreso $ingreso, ?array $before, ?string $reason): void
     {
-        DB::table('audit_logs')->insert([
-            'tabla' => 'ingresos',
-            'registro_id' => $ingreso->id,
-            'operacion' => $operation,
-            'usuario_id' => auth()->id(),
-            'usuario_nombre' => auth()->user()?->full_name,
-            'datos_anteriores_json' => $before ? json_encode($before, JSON_UNESCAPED_UNICODE) : null,
-            'datos_nuevos_json' => json_encode($ingreso->fresh()->only(['numero_serie', 'categoria_id', 'vecino_id', 'concepto', 'monto', 'metodo_pago', 'fecha_ingreso', 'estado']), JSON_UNESCAPED_UNICODE),
-            'razon_cambio' => $reason,
-            'timestamp' => now(),
+        DB::statement('CALL sp_audit_log(?, ?, ?, ?, ?, ?, ?)', [
+            'ingresos',
+            $ingreso->id,
+            $operation,
+            auth()->id(),
+            $reason,
+            $before ? json_encode($before, JSON_UNESCAPED_UNICODE) : null,
+            json_encode($ingreso->fresh()->only(['numero_serie', 'categoria_id', 'vecino_id', 'concepto', 'monto', 'metodo_pago', 'fecha_ingreso', 'estado']), JSON_UNESCAPED_UNICODE),
         ]);
     }
 }

@@ -1,0 +1,93 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jass_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    environment:
+      APP_NAME: "JASS Quilcata"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://127.0.0.1:8080
+      DB_CONNECTION: mysql
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_DATABASE: jass_quilcata
+      DB_USERNAME: jass_user
+      DB_PASSWORD: jass_password
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      FILESYSTEM_DISK: public
+      COMPOSER_CACHE_DIR: /tmp/composer-cache
+    volumes:
+      - ./:/var/www/html
+      - composer_cache:/tmp/composer-cache
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - jass_network
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: jass_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - jass_network
+
+  mariadb:
+    image: mariadb:12.2.2
+    container_name: jass_mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: root_password
+      MARIADB_DATABASE: jass_quilcata
+      MARIADB_USER: jass_user
+      MARIADB_PASSWORD: jass_password
+      TZ: America/Lima
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - jass_network
+
+  phpmyadmin:
+    image: phpmyadmin:5-apache
+    container_name: jass_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 256M
+    ports:
+      - "8081:80"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - jass_network
+
+volumes:
+  mariadb_data:
+  composer_cache:
+
+networks:
+  jass_network:
+    driver: bridge

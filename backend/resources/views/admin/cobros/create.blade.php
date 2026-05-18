@@ -11,7 +11,7 @@
             <h1 class="page-title">Registrar Pago</h1>
             <div class="page-subtitle">Selecciona un usuario y procesa el cobro del periodo.</div>
         </div>
-        <a class="btn btn-outline-secondary" href="{{ route('admin.cobros.index') }}">Volver</a>
+        <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.cobros.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
     </div>
 
     @if ($errors->any())
@@ -34,7 +34,7 @@
                 </div>
                 <form method="GET" action="{{ route('admin.cobros.create') }}" class="d-flex gap-2 mb-3">
                     <input class="form-control" name="buscar" value="{{ $buscar }}" placeholder="Buscar por codigo, DNI o nombre...">
-                    <button class="btn btn-outline-info">Buscar</button>
+                    <button class="btn btn-outline-info btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m21 21-4.3-4.3"/><circle cx="11" cy="11" r="7"/></svg></span>Buscar</button>
                 </form>
 
                 <div class="d-grid gap-2">
@@ -69,13 +69,13 @@
                     </div>
                 </section>
 
-                <form method="POST" action="{{ route('admin.cobros.store') }}" class="panel p-4">
+                <form method="POST" action="{{ route('admin.cobros.store') }}" class="panel p-4 form-card">
                     @csrf
                     <input type="hidden" name="vecino_id" value="{{ $usuario->id }}">
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Periodo anio</label>
-                            <input class="form-control" type="number" name="periodo_anio" value="{{ old('periodo_anio', $anio) }}" required>
+                            <input class="form-control" type="number" min="2020" max="2100" name="periodo_anio" value="{{ old('periodo_anio', $anio) }}" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Periodo mes</label>
@@ -98,7 +98,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Monto recibido (S/)</label>
-                            <input class="form-control" name="monto_recibido" value="{{ old('monto_recibido', number_format($desglose['total'], 2, '.', '')) }}" required>
+                            <input class="form-control" type="number" min="0" step="0.01" name="monto_recibido" value="{{ old('monto_recibido', number_format($desglose['total'], 2, '.', '')) }}" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Metodo de pago</label>
@@ -114,9 +114,9 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a class="btn btn-outline-secondary" href="{{ route('admin.cobros.index') }}">Cancelar</a>
-                        <button class="btn btn-aqua px-4">Confirmar pago</button>
+                    <div class="form-actions">
+                        <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.cobros.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Cancelar</a>
+                        <button class="btn btn-aqua btn-icon px-4">Confirmar pago</button>
                     </div>
                 </form>
             @else

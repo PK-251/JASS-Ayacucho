@@ -11,10 +11,10 @@
             <h1 class="page-title">{{ $ingreso->numero_serie }}</h1>
             <div class="page-subtitle">{{ $ingreso->fecha_ingreso?->format('d/m/Y') }} · {{ $ingreso->categoria?->nombre }}</div>
         </div>
-        <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary" href="{{ route('admin.ingresos.index') }}">Volver</a>
+        <div class="page-actions">
+            <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.ingresos.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
             @if ($ingreso->estado === 'activo')
-                <a class="btn btn-aqua" href="{{ route('admin.ingresos.edit', $ingreso) }}">Editar</a>
+                <a class="btn btn-aqua btn-icon" href="{{ route('admin.ingresos.edit', $ingreso) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/></svg></span>Editar</a>
             @endif
         </div>
     </div>
@@ -50,7 +50,7 @@
                 </dl>
             </section>
 
-            <section class="panel p-4">
+            <section class="panel p-4 form-card">
                 <h2 class="h5 fw-bold mb-3">Comprobante</h2>
                 @if ($ingreso->comprobante_nombre)
                     <div class="d-flex justify-content-between align-items-center panel p-3" style="box-shadow:none">
@@ -84,7 +84,7 @@
                     </form>
                 </section>
             @else
-                <section class="panel p-4">
+                <section class="panel p-4 form-card">
                     <h2 class="h5 fw-bold text-danger mb-3">Ingreso anulado</h2>
                     <p class="mb-1"><strong>Motivo:</strong> {{ $ingreso->motivo_anulacion }}</p>
                     <p class="mb-0"><strong>Fecha:</strong> {{ $ingreso->fecha_anulacion?->format('d/m/Y H:i') }}</p>

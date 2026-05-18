@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-4">
         <label class="form-label fw-semibold">Monto (S/)</label>
-        <input class="form-control" name="monto" value="{{ old('monto', isset($multa) && $multa->monto ? number_format((float) $multa->monto, 2, '.', '') : '') }}" required>
+        <input class="form-control" type="number" min="0.01" step="0.01" name="monto" value="{{ old('monto', isset($multa) && $multa->monto ? number_format((float) $multa->monto, 2, '.', '') : '') }}" required>
     </div>
     <div class="col-md-4">
         <label class="form-label fw-semibold">Tipo de aplicacion</label>

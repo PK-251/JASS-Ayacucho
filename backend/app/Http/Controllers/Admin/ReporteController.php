@@ -62,17 +62,19 @@ class ReporteController extends Controller
 
         $anio = (int) ($data['periodo_anio'] ?? 2026);
         $mes = (int) ($data['periodo_mes'] ?? 5);
-        $snapshot = $this->buildSnapshot($anio, $mes, true);
-        $snapshot['version'] = 1;
 
-        $reporte = ReporteMensual::updateOrCreate(
-            [
-                'periodo_anio' => $anio,
-                'periodo_mes' => $mes,
-                'es_reporte_parcial' => true,
-            ],
-            $snapshot
-        );
+        try {
+            DB::statement(
+                'CALL sp_generar_reporte_mensual(?, ?, ?, ?, @sp_reporte_id)',
+                [$anio, $mes, true, auth()->id()]
+            );
+
+            $result = DB::selectOne('SELECT @sp_reporte_id AS reporte_id');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withErrors(['periodo_mes' => $this->procedureError($e)]);
+        }
+
+        $reporte = ReporteMensual::findOrFail((int) $result->reporte_id);
 
         return redirect()->route('admin.reportes.show', $reporte)->with('success', 'Reporte parcial generado correctamente.');
     }
@@ -231,4 +233,20 @@ class ReporteController extends Controller
             ->where('es_reporte_parcial', false)
             ->first();
     }
+
+    private function procedureError(\Illuminate\Database\QueryException $e): string
+    {
+        $message = $e->getPrevious()?->getMessage() ?: $e->getMessage();
+
+        if (preg_match('/1644\s+(.+)$/', $message, $matches)) {
+            return trim($matches[1]);
+        }
+
+        if (str_contains($message, 'CONSTRAINT') || str_contains($message, 'constraint')) {
+            return 'No se permiten valores negativos ni montos invalidos.';
+        }
+
+        return 'No se pudo completar la operacion en MariaDB. Revisa los datos e intenta nuevamente.';
+    }
+
 }

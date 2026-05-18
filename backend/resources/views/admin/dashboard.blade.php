@@ -4,7 +4,8 @@
     @include('admin.partials.nav', ['active' => 'inicio'])
 @endsection
 
-@section('content')
+@section('content')
+    @php($balanceEsDeficit = $balanceMes < 0)
     <div class="topbar">
         <div>
             <h1 class="page-title">Dashboard</h1>
@@ -38,8 +39,8 @@
         <div class="col-xl-3 col-md-6">
             <div class="metric-card">
                 <div class="metric-label">Balance Mayo</div>
-                <div class="metric-value">S/{{ number_format($balanceMes, 2) }}</div>
-                <span class="badge badge-soft mt-2">Neto</span>
+                <div class="metric-value {{ $balanceEsDeficit ? 'danger' : '' }}">S/{{ number_format(abs($balanceMes), 2) }}</div>
+                <span class="badge {{ $balanceEsDeficit ? 'badge-danger-soft' : 'badge-soft' }} mt-2">{{ $balanceEsDeficit ? 'Deficit' : 'Neto' }}</span>
             </div>
         </div>
     </div>
@@ -79,19 +80,19 @@
     <section>
         <h2 class="h5 fw-bold mb-3">Acciones rapidas</h2>
         <div class="d-flex flex-wrap gap-3 quick-actions">
-            <a class="btn btn-outline-info px-4 py-2" href="{{ route('admin.cobros.create') }}">
+            <a class="btn btn-outline-info btn-icon px-4 py-2" href="{{ route('admin.cobros.create') }}">
                 <span class="action-icon"><svg viewBox="0 0 24 24"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M16 13h.01"/></svg></span>
                 Registrar pago
             </a>
-            <a class="btn btn-aqua px-4 py-2" href="{{ route('admin.usuarios.create') }}">
+            <a class="btn btn-aqua btn-icon px-4 py-2" href="{{ route('admin.usuarios.create') }}">
                 <span class="action-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg></span>
                 Nuevo Usuario
             </a>
-            <a class="btn btn-aqua px-4 py-2" href="{{ route('admin.egresos.create') }}">
+            <a class="btn btn-aqua btn-icon px-4 py-2" href="{{ route('admin.egresos.create') }}">
                 <span class="action-icon"><svg viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg></span>
                 Registrar Egreso
             </a>
-            <a class="btn btn-aqua px-4 py-2" href="{{ route('admin.reportes.index') }}">
+            <a class="btn btn-aqua btn-icon px-4 py-2" href="{{ route('admin.reportes.index') }}">
                 <span class="action-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16v-5"/><path d="M12 16V7"/><path d="M17 16v-3"/></svg></span>
                 Ver Reporte
             </a>

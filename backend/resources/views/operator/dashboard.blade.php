@@ -32,18 +32,18 @@
     <h2 class="h5 fw-bold mb-3">Que quieres hacer?</h2>
     <div class="d-flex flex-wrap gap-3 quick-actions">
         @if ($jornada)
-            <a class="btn btn-aqua btn-lg px-4" href="{{ route('operator.cobros.index') }}">Continuar cobrando</a>
+            <a class="btn btn-aqua btn-icon btn-lg px-4" href="{{ route('operator.cobros.index') }}"><svg viewBox="0 0 24 24"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M16 13h.01"/></svg>Continuar cobrando</a>
             <form method="POST" action="{{ route('operator.cobros.cerrar') }}" class="d-inline">
                 @csrf
-                <button class="btn btn-outline-info btn-lg px-4">Cerrar jornada</button>
+                <button class="btn btn-outline-info btn-icon btn-lg px-4"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cerrar jornada</button>
             </form>
         @else
             <form method="POST" action="{{ route('operator.cobros.iniciar') }}" class="d-inline">
                 @csrf
-                <button class="btn btn-aqua btn-lg px-4">Iniciar jornada de cobro</button>
+                <button class="btn btn-aqua btn-icon btn-lg px-4"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/><path d="M12 14v4"/><path d="M10 16h4"/></svg>Iniciar jornada de cobro</button>
             </form>
         @endif
-        <a class="btn btn-outline-info btn-lg px-4" href="{{ route('operator.asistencia.index') }}">Pasar lista de asistencia</a>
+        <a class="btn btn-outline-info btn-icon btn-lg px-4" href="{{ route('operator.asistencia.index') }}"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/></svg>Pasar lista de asistencia</a>
     </div>
 </section>
 

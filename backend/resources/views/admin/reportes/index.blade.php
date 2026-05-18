@@ -20,7 +20,7 @@
         @csrf
         <input type="hidden" name="periodo_anio" value="2026">
         <input type="hidden" name="periodo_mes" value="5">
-        <button class="btn btn-aqua">+ Generar reporte parcial</button>
+        <button class="btn btn-aqua btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Generar reporte parcial</button>
     </form>
 </div>
 
@@ -35,7 +35,7 @@
                 <div class="fw-bold text-warning mb-1">Reporte pendiente: {{ $months[$pendiente->periodo_mes] ?? $pendiente->periodo_mes }} {{ $pendiente->periodo_anio }}</div>
                 <div class="text-secondary">El reporte ya fue generado y necesita revision antes de publicarse como oficial.</div>
             </div>
-            <div class="d-flex gap-2">
+            <div class="page-actions">
                 <a class="btn btn-outline-warning bg-white" href="{{ route('admin.reportes.show', $pendiente) }}">Ver detalle</a>
                 <a class="btn btn-aqua" href="{{ route('admin.reportes.show', $pendiente) }}">Revisar y aprobar</a>
             </div>
@@ -129,8 +129,8 @@
                     <td class="fw-bold {{ $reporte->balance_neto < 0 ? 'text-danger' : 'text-success' }}">S/{{ number_format((float) $reporte->balance_neto, 2) }}</td>
                     <td><span class="badge {{ $reporte->estado === 'aprobado' ? 'badge-soft' : ($reporte->estado === 'pendiente_aprobacion' ? 'badge-warning-soft' : 'badge-danger-soft') }}">{{ str_replace('_', ' ', ucfirst($reporte->estado)) }}</span></td>
                     <td>
-                        <a class="btn btn-sm btn-outline-info" href="{{ route('admin.reportes.show', $reporte) }}">Ver</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('admin.reportes.pdf', $reporte) }}">PDF</a>
+                        <a class="btn btn-sm btn-outline-info btn-icon" href="{{ route('admin.reportes.show', $reporte) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>Ver</a>
+                        <a class="btn btn-sm btn-outline-secondary btn-icon" href="{{ route('admin.reportes.pdf', $reporte) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>PDF</a>
                     </td>
                 </tr>
             @empty

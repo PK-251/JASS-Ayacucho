@@ -11,10 +11,10 @@
         <h1 class="page-title">{{ $evento->titulo }}</h1>
         <div class="page-subtitle">{{ $evento->fecha_evento?->format('d/m/Y') }} · {{ substr($evento->hora_inicio, 0, 5) }} · {{ $evento->lugar }}</div>
     </div>
-    <div class="d-flex gap-2 flex-wrap">
-        <a class="btn btn-outline-secondary" href="{{ route('operator.asistencia.index') }}">Volver</a>
+    <div class="page-actions">
+        <a class="btn btn-outline-secondary btn-icon" href="{{ route('operator.asistencia.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
         @if ($canEdit)
-            <form method="POST" action="{{ route('operator.asistencia.confirmar', $evento) }}" onsubmit="return confirm('Se cerrara la lista y se aplicaran multas a ausentes. ¿Continuar?')">@csrf<button class="btn btn-success">Confirmar y aplicar multas</button></form>
+            <form method="POST" action="{{ route('operator.asistencia.confirmar', $evento) }}" onsubmit="return confirm('Se cerrara la lista y se aplicaran multas a ausentes. ¿Continuar?')">@csrf<button class="btn btn-success btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></svg></span>Confirmar y aplicar multas</button></form>
         @endif
     </div>
 </div>

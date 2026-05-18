@@ -16,9 +16,9 @@
         <h1 class="page-title">Reporte {{ $months[$reporte->periodo_mes] ?? $reporte->periodo_mes }} {{ $reporte->periodo_anio }}</h1>
         <div class="page-subtitle"><span class="badge {{ $estadoClass }}">{{ str_replace('_', ' ', ucfirst($reporte->estado)) }}</span> · Generado {{ $reporte->fecha_generacion?->format('d/m/Y H:i') }}</div>
     </div>
-    <div class="d-flex gap-2 flex-wrap">
-        <a class="btn btn-outline-secondary" href="{{ route('admin.reportes.index') }}">Volver</a>
-        <a class="btn btn-outline-info" href="{{ route('admin.reportes.pdf', $reporte) }}">Exportar PDF</a>
+    <div class="page-actions">
+        <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.reportes.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
+        <a class="btn btn-outline-info btn-icon" href="{{ route('admin.reportes.pdf', $reporte) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>Exportar PDF</a>
     </div>
 </div>
 
@@ -109,7 +109,7 @@
                 </form>
             </section>
 
-            <section class="panel p-4" style="border-color:#ef4444">
+            <section class="panel p-4 form-card" style="border-color:#ef4444">
                 <h2 class="h5 fw-bold text-danger mb-3">Rechazar reporte</h2>
                 <form method="POST" action="{{ route('admin.reportes.rechazar', $reporte) }}">
                     @csrf
@@ -122,13 +122,13 @@
                 </form>
             </section>
         @elseif ($reporte->estado === 'aprobado')
-            <section class="panel p-4">
+            <section class="panel p-4 form-card">
                 <h2 class="h5 fw-bold text-success mb-2">Reporte aprobado</h2>
                 <p class="mb-1">{{ $reporte->observaciones_admin ?: 'Sin observaciones.' }}</p>
                 <p class="text-secondary mb-0">{{ $reporte->fecha_aprobacion?->format('d/m/Y H:i') }}</p>
             </section>
         @else
-            <section class="panel p-4">
+            <section class="panel p-4 form-card">
                 <h2 class="h5 fw-bold text-danger mb-2">Reporte rechazado</h2>
                 <p class="mb-1">{{ $reporte->motivo_rechazo }}</p>
                 <p class="text-secondary mb-0">{{ $reporte->fecha_rechazo?->format('d/m/Y H:i') }}</p>

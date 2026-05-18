@@ -9,10 +9,12 @@ use App\Models\Multa;
 use App\Models\MultaAplicada;
 use App\Models\TipoEvento;
 use App\Models\Vecino;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class AsistenciaController extends Controller
 {
@@ -189,6 +191,24 @@ class AsistenciaController extends Controller
         });
 
         return redirect()->route('admin.asistencia.show', $evento)->with('success', 'Lista confirmada y multas aplicadas.');
+    }
+
+
+    public function pdf(Evento $evento): Response
+    {
+        $evento->load(['tipo']);
+        $asistencias = Asistencia::with(['vecino', 'multa.multa'])
+            ->where('evento_id', $evento->id)
+            ->join('vecinos', 'vecinos.id', '=', 'asistencias.vecino_id')
+            ->select('asistencias.*')
+            ->orderBy('vecinos.apellidos')
+            ->orderBy('vecinos.nombres')
+            ->get();
+
+        $stats = $this->stats($evento);
+        $pdf = Pdf::loadView('admin.asistencia.pdf', compact('evento', 'asistencias', 'stats'))->setPaper('a4');
+
+        return $pdf->download('asistencia_'.$evento->codigo.'.pdf');
     }
 
     private function ensureList(Evento $evento): void

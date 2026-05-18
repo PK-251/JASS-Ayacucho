@@ -59,6 +59,7 @@ Route::middleware(['auth', 'role:Administrador'])->prefix('admin')->name('admin.
     Route::get('/asistencia/crear', [AsistenciaController::class, 'create'])->name('asistencia.create');
     Route::post('/asistencia', [AsistenciaController::class, 'store'])->name('asistencia.store');
     Route::get('/asistencia/{evento}', [AsistenciaController::class, 'show'])->name('asistencia.show');
+    Route::get('/asistencia/{evento}/pdf', [AsistenciaController::class, 'pdf'])->name('asistencia.pdf');
     Route::post('/asistencia/{evento}/generar-lista', [AsistenciaController::class, 'generarLista'])->name('asistencia.generar-lista');
     Route::patch('/asistencia/marca/{asistencia}', [AsistenciaController::class, 'updateAttendance'])->name('asistencia.update-attendance');
     Route::post('/asistencia/{evento}/confirmar', [AsistenciaController::class, 'confirmar'])->name('asistencia.confirmar');
@@ -70,6 +71,7 @@ Route::middleware(['auth', 'role:Operador'])->prefix('operador')->name('operator
     Route::post('/cobros/iniciar', [OperatorCobroController::class, 'iniciar'])->name('cobros.iniciar');
     Route::post('/cobros', [OperatorCobroController::class, 'store'])->name('cobros.store');
     Route::get('/cobros/{cobro}', [OperatorCobroController::class, 'show'])->name('cobros.show');
+    Route::get('/cobros/{cobro}/pdf', [OperatorCobroController::class, 'pdf'])->name('cobros.pdf');
     Route::post('/cobros/{vecino}/pendiente', [OperatorCobroController::class, 'pendiente'])->name('cobros.pendiente');
     Route::post('/cobros/cerrar/jornada', [OperatorCobroController::class, 'cerrar'])->name('cobros.cerrar');
     Route::get('/asistencia', [OperatorAsistenciaController::class, 'index'])->name('asistencia.index');

@@ -11,7 +11,7 @@
         <h1 class="page-title">Pago confirmado</h1>
         <div class="page-subtitle">{{ $cobro->numero_serie }} · {{ $cobro->fecha_cobro?->format('d/m/Y') }} {{ substr($cobro->hora_cobro, 0, 5) }}</div>
     </div>
-    <a class="btn btn-outline-secondary" href="{{ route('operator.cobros.index') }}">Continuar cobrando</a>
+    <a class="btn btn-outline-secondary btn-icon" href="{{ route('operator.cobros.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Continuar cobrando</a>
 </div>
 
 @if (session('success'))
@@ -28,8 +28,8 @@
         <div class="d-flex justify-content-between py-2"><span>Metodo</span><strong>{{ ucfirst($cobro->metodo_pago) }}</strong></div>
     </div>
     <div class="d-grid gap-2">
-        <button class="btn btn-aqua" onclick="window.print()">Imprimir comprobante</button>
-        <a class="btn btn-outline-info" href="{{ route('operator.cobros.index') }}">Continuar con siguiente usuario</a>
+        <a class="btn btn-aqua btn-icon" href="{{ route('operator.cobros.pdf', $cobro) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>Descargar comprobante PDF</a>
+        <a class="btn btn-outline-info btn-icon" href="{{ route('operator.cobros.index') }}">Continuar con siguiente usuario</a>
     </div>
 </section>
 @endsection

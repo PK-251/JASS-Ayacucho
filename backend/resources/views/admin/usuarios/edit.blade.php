@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <form method="POST" action="{{ route('admin.usuarios.update', $usuario) }}" class="panel p-4">
+    <form method="POST" action="{{ route('admin.usuarios.update', $usuario) }}" class="panel p-4 form-card">
         @csrf
         @method('PUT')
         @include('admin.usuarios._form', ['buttonText' => 'Guardar Cambios'])

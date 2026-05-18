@@ -11,7 +11,7 @@
             <h1 class="page-title">Egresos</h1>
             <div class="page-subtitle">Gestion de gastos, proveedores, aprobaciones y comprobantes.</div>
         </div>
-        <a class="btn btn-aqua px-4" href="{{ route('admin.egresos.create') }}">Registrar egreso</a>
+        <a class="btn btn-aqua btn-icon px-4" href="{{ route('admin.egresos.create') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Registrar egreso</a>
     </div>
 
     @if (session('success'))
@@ -68,7 +68,7 @@
                         <option value="{{ $categoria->id }}" @selected((string) $categoriaId === (string) $categoria->id)>{{ $categoria->nombre }}</option>
                     @endforeach
                 </select>
-                <button class="btn btn-outline-info">Filtrar</button>
+                <button class="btn btn-outline-info btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M3 5h18"/><path d="M6 12h12"/><path d="M10 19h4"/></svg></span>Filtrar</button>
             </form>
         </div>
 
@@ -87,7 +87,7 @@
                         <td>
                             <span class="badge {{ $egreso->estado === 'aprobado' ? 'badge-soft' : ($egreso->estado === 'pendiente_aprobacion' ? 'badge-warning-soft' : 'badge-danger-soft') }}">{{ str_replace('_', ' ', ucfirst($egreso->estado)) }}</span>
                         </td>
-                        <td><a class="btn btn-sm btn-outline-info" href="{{ route('admin.egresos.show', $egreso) }}">Ver</a></td>
+                        <td><a class="btn btn-sm btn-outline-info btn-icon" href="{{ route('admin.egresos.show', $egreso) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>Ver</a></td>
                     </tr>
                 @empty
                     <tr><td colspan="8" class="text-center text-secondary py-4">No se encontraron egresos.</td></tr>

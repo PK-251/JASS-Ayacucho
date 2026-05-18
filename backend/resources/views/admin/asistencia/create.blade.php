@@ -11,14 +11,14 @@
         <h1 class="page-title">Nuevo evento</h1>
         <div class="page-subtitle">Programa asambleas, faenas o capacitaciones.</div>
     </div>
-    <a class="btn btn-outline-secondary" href="{{ route('admin.asistencia.index') }}">Volver</a>
+    <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.asistencia.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
 </div>
 
 @if ($errors->any())
     <div class="alert alert-danger border-0 shadow-sm"><strong>Revisa los datos.</strong><ul class="mb-0 mt-2">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
 @endif
 
-<section class="panel p-4">
+<section class="panel p-4 form-card">
     <form method="POST" action="{{ route('admin.asistencia.store') }}" class="row g-3">
         @csrf
         <div class="col-md-6">
@@ -76,8 +76,8 @@
             <div class="form-text">Si es obligatoria, al confirmar la lista se podran generar multas a los ausentes.</div>
         </div>
         <div class="col-12 d-flex justify-content-end gap-2 mt-4">
-            <a class="btn btn-outline-secondary" href="{{ route('admin.asistencia.index') }}">Cancelar</a>
-            <button class="btn btn-aqua">Crear evento</button>
+            <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.asistencia.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Cancelar</a>
+            <button class="btn btn-aqua"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Crear evento</button>
         </div>
     </form>
 </section>

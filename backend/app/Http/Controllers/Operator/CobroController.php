@@ -10,11 +10,13 @@ use App\Models\MultaAplicada;
 use App\Models\PagoPendiente;
 use App\Models\Tarifa;
 use App\Models\Vecino;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class CobroController extends Controller
 {
@@ -86,68 +88,29 @@ class CobroController extends Controller
             'estado' => 'activa',
         ]);
 
-        $vecino = Vecino::with('categoria')->findOrFail($data['vecino_id']);
-        $desglose = $this->desglose($vecino, 2026, 5);
-        $total = $this->money($desglose['total']);
-        $recibido = $this->money($data['monto_recibido']);
+        try {
+            DB::statement(
+                'CALL sp_registrar_cobro(?, ?, ?, ?, ?, ?, ?, ?, @sp_cobro_id, @sp_numero_serie)',
+                [
+                    (int) $data['vecino_id'],
+                    auth()->id(),
+                    $jornada->id,
+                    2026,
+                    5,
+                    $this->money($data['monto_recibido']),
+                    $data['metodo_pago'],
+                    $data['observaciones'] ?? null,
+                ]
+            );
 
-        if (abs($recibido - $total) > 0.009) {
-            return back()->withInput()->withErrors(['monto_recibido' => 'El monto debe coincidir con el total: S/'.number_format($total, 2).'.']);
+            $result = DB::selectOne('SELECT @sp_cobro_id AS cobro_id');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['monto_recibido' => $this->procedureError($e)]);
         }
 
-        $duplicado = Cobro::where('vecino_id', $vecino->id)
-            ->where('periodo_anio', 2026)
-            ->where('periodo_mes', 5)
-            ->where('estado', 'pagado')
-            ->exists();
-
-        if ($duplicado) {
-            return back()->withInput()->withErrors(['vecino_id' => 'Este usuario ya pago el periodo actual.']);
-        }
-
-        $cobro = DB::transaction(function () use ($data, $desglose, $total, $recibido, $jornada) {
-            $serie = $this->nextSerie(2026);
-            $fecha = now()->toDateString();
-            $hora = now()->format('H:i:s');
-
-            $cobro = Cobro::create([
-                'numero_serie' => $serie,
-                'vecino_id' => $data['vecino_id'],
-                'operador_id' => auth()->id(),
-                'jornada_id' => $jornada->id,
-                'periodo_anio' => 2026,
-                'periodo_mes' => 5,
-                'monto_cuota' => $this->money($desglose['cuota']),
-                'monto_deuda_anterior' => $this->money($desglose['deuda_cuotas']),
-                'monto_multas' => $this->money($desglose['deuda_multas']),
-                'monto_total' => $total,
-                'monto_recibido' => $recibido,
-                'metodo_pago' => $data['metodo_pago'],
-                'estado' => 'pagado',
-                'fecha_cobro' => $fecha,
-                'hora_cobro' => $hora,
-                'observaciones' => $data['observaciones'] ?? null,
-            ]);
-
-            PagoPendiente::where('vecino_id', $data['vecino_id'])->where('estado', 'pendiente')
-                ->update(['estado' => 'cobrado', 'fecha_cobro' => $fecha, 'cobro_id' => $cobro->id]);
-
-            MultaAplicada::where('vecino_id', $data['vecino_id'])->where('estado', 'pendiente')
-                ->update(['estado' => 'cobrada', 'fecha_cobro' => $fecha, 'cobro_id' => $cobro->id]);
-
-            ComprobantePdf::create([
-                'cobro_id' => $cobro->id,
-                'numero_serie' => $serie,
-                'ruta_archivo' => '/storage/comprobantes/'.date('Y').'/'.date('m').'/'.$serie.'.pdf',
-                'nombre_archivo' => $serie.'.pdf',
-                'codigo_qr_url' => route('operator.cobros.show', $cobro),
-                'modalidad_entrega' => 'pendiente',
-            ]);
-
-            $this->refreshJornada($jornada);
-
-            return $cobro;
-        });
+        $cobro = Cobro::findOrFail((int) $result->cobro_id);
 
         return redirect()->route('operator.cobros.show', $cobro)->with('success', 'Pago registrado correctamente.');
     }
@@ -157,6 +120,16 @@ class CobroController extends Controller
         abort_unless($cobro->operador_id === auth()->id(), 403);
         $cobro->load(['vecino.categoria', 'comprobante']);
         return view('operator.cobros.show', compact('cobro'));
+    }
+
+
+    public function pdf(Cobro $cobro): Response
+    {
+        abort_unless($cobro->operador_id === auth()->id(), 403);
+        $cobro->load(['vecino.categoria', 'operador', 'comprobante']);
+        $pdf = Pdf::loadView('admin.cobros.pdf', ['cobro' => $cobro])->setPaper('a5');
+
+        return $pdf->download($cobro->numero_serie.'.pdf');
     }
 
     public function pendiente(Request $request, Vecino $vecino): RedirectResponse
@@ -220,29 +193,35 @@ class CobroController extends Controller
 
     private function desglose(Vecino $vecino, ?int $anio = null, ?int $mes = null): array
     {
-        $tarifa = Tarifa::where('categoria_id', $vecino->categoria_id)
-            ->where('activa', true)
-            ->whereNull('fecha_vigencia_fin')
-            ->latest('fecha_vigencia_inicio')
-            ->first() ?? Tarifa::where('categoria_id', $vecino->categoria_id)->latest('fecha_vigencia_inicio')->first();
+        $anio ??= (int) now()->year;
+        $mes ??= (int) now()->month;
 
-        $cuota = $this->money($tarifa?->monto ?? 0);
-        $pendientesQuery = PagoPendiente::where('vecino_id', $vecino->id)->where('estado', 'pendiente');
-        if ($anio && $mes) {
-            $pendientesQuery->where(function ($query) use ($anio, $mes) {
-                $query->where('periodo_anio', '<>', $anio)
-                    ->orWhere('periodo_mes', '<>', $mes);
-            });
+        try {
+            $row = DB::selectOne('CALL sp_calcular_deuda_vecino(?, ?, ?)', [$vecino->id, $anio, $mes]);
+
+            return [
+                'cuota' => $this->money($row->cuota ?? 0),
+                'deuda_cuotas' => $this->money($row->deuda_cuotas ?? 0),
+                'deuda_multas' => $this->money($row->deuda_multas ?? 0),
+                'total' => $this->money($row->total ?? 0),
+            ];
+        } catch (\Illuminate\Database\QueryException) {
+            $tarifa = Tarifa::where('categoria_id', $vecino->categoria_id)
+                ->where('activa', true)
+                ->whereNull('fecha_vigencia_fin')
+                ->latest('fecha_vigencia_inicio')
+                ->first() ?? Tarifa::where('categoria_id', $vecino->categoria_id)->latest('fecha_vigencia_inicio')->first();
+            $cuota = $this->money($tarifa?->monto ?? 0);
+            $deudaCuotas = $this->money(PagoPendiente::where('vecino_id', $vecino->id)->where('estado', 'pendiente')->sum('monto_pendiente'));
+            $deudaMultas = $this->money(MultaAplicada::where('vecino_id', $vecino->id)->where('estado', 'pendiente')->sum('monto_aplicado'));
+
+            return [
+                'cuota' => $cuota,
+                'deuda_cuotas' => $deudaCuotas,
+                'deuda_multas' => $deudaMultas,
+                'total' => $this->money($cuota + $deudaCuotas + $deudaMultas),
+            ];
         }
-        $deudaCuotas = $this->money($pendientesQuery->sum('monto_pendiente'));
-        $deudaMultas = $this->money(MultaAplicada::where('vecino_id', $vecino->id)->where('estado', 'pendiente')->sum('monto_aplicado'));
-
-        return [
-            'cuota' => $cuota,
-            'deuda_cuotas' => $deudaCuotas,
-            'deuda_multas' => $deudaMultas,
-            'total' => $this->money($cuota + $deudaCuotas + $deudaMultas),
-        ];
     }
 
     private function nextSerie(int $year): string
@@ -257,4 +236,20 @@ class CobroController extends Controller
     {
         return round((float) $value, 2);
     }
+
+    private function procedureError(\Illuminate\Database\QueryException $e): string
+    {
+        $message = $e->getPrevious()?->getMessage() ?: $e->getMessage();
+
+        if (preg_match('/1644\s+(.+)$/', $message, $matches)) {
+            return trim($matches[1]);
+        }
+
+        if (str_contains($message, 'CONSTRAINT') || str_contains($message, 'constraint')) {
+            return 'No se permiten valores negativos ni montos invalidos.';
+        }
+
+        return 'No se pudo completar la operacion en MariaDB. Revisa los datos e intenta nuevamente.';
+    }
+
 }

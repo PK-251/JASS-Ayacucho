@@ -11,9 +11,9 @@
             <h1 class="page-title">Multas y Tarifas</h1>
             <div class="page-subtitle">Configura cuotas mensuales, historial tarifario y tipos de multa.</div>
         </div>
-        <div class="d-flex gap-2">
-            <a class="btn btn-outline-info" href="{{ route('admin.tarifas.create') }}">Actualizar tarifa</a>
-            <a class="btn btn-aqua" href="{{ route('admin.multas.create') }}">Nueva multa</a>
+        <div class="page-actions">
+            <a class="btn btn-outline-info btn-icon" href="{{ route('admin.tarifas.create') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/></svg></span>Actualizar tarifa</a>
+            <a class="btn btn-aqua btn-icon" href="{{ route('admin.multas.create') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Nueva multa</a>
         </div>
     </div>
 
@@ -33,7 +33,7 @@
             <section class="panel p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="h5 fw-bold mb-0">Tarifas por categoria</h2>
-                    <a class="btn btn-sm btn-outline-info" href="{{ route('admin.tarifas.create') }}">Modificar cuota</a>
+                    <a class="btn btn-sm btn-outline-info btn-icon" href="{{ route('admin.tarifas.create') }}">Modificar cuota</a>
                 </div>
                 <div class="row g-3">
                     @foreach ($tarifasVigentes as $tarifa)
@@ -69,7 +69,7 @@
     <section class="panel table-panel">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="h5 fw-bold mb-0">Tipos de multa configurados</h2>
-            <a class="btn btn-aqua" href="{{ route('admin.multas.create') }}">Nueva multa</a>
+            <a class="btn btn-aqua btn-icon" href="{{ route('admin.multas.create') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Nueva multa</a>
         </div>
         <div class="table-responsive">
             <table class="table align-middle">
@@ -85,13 +85,13 @@
                             <td><span class="badge {{ $multa->activa ? 'badge-soft' : 'badge-danger-soft' }}">{{ $multa->activa ? 'Activa' : 'Inactiva' }}</span></td>
                             <td>{{ $multa->aplicadas_count }}</td>
                             <td>
-                                <div class="d-flex gap-2">
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ route('admin.multas.edit', $multa) }}">Editar</a>
+                                <div class="page-actions">
+                                    <a class="btn btn-sm btn-outline-secondary btn-icon" href="{{ route('admin.multas.edit', $multa) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/></svg></span>Editar</a>
                                     @if ($multa->activa)
                                         <form method="POST" action="{{ route('admin.multas.destroy', $multa) }}" onsubmit="return confirm('Desactivar esta multa?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-danger">Desactivar</button>
+                                            <button class="btn btn-sm btn-outline-danger btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg></span>Desactivar</button>
                                         </form>
                                     @endif
                                 </div>

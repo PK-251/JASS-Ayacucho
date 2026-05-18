@@ -11,7 +11,7 @@
             <h1 class="page-title">Cobros</h1>
             <div class="page-subtitle">Registro, seguimiento y anulacion de pagos.</div>
         </div>
-        <a class="btn btn-aqua px-4" href="{{ route('admin.cobros.create') }}">Nuevo Cobro</a>
+        <a class="btn btn-aqua btn-icon px-4" href="{{ route('admin.cobros.create') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Nuevo Cobro</a>
     </div>
 
     @if (session('success'))
@@ -37,7 +37,7 @@
                     <option value="pagado" @selected($estado === 'pagado')>Pagados</option>
                     <option value="anulado" @selected($estado === 'anulado')>Anulados</option>
                 </select>
-                <button class="btn btn-outline-info">Filtrar</button>
+                <button class="btn btn-outline-info btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M3 5h18"/><path d="M6 12h12"/><path d="M10 19h4"/></svg></span>Filtrar</button>
             </form>
         </div>
 
@@ -66,10 +66,10 @@
                         <td class="fw-bold">S/{{ number_format((float) $cobro->monto_recibido, 2) }}</td>
                         <td><span class="badge {{ $cobro->estado === 'pagado' ? 'badge-soft' : 'badge-danger-soft' }}">{{ ucfirst($cobro->estado) }}</span></td>
                         <td>
-                            <div class="d-flex gap-2">
-                                <a class="btn btn-sm btn-outline-info" href="{{ route('admin.cobros.show', $cobro) }}">Ver</a>
+                            <div class="page-actions">
+                                <a class="btn btn-sm btn-outline-info btn-icon" href="{{ route('admin.cobros.show', $cobro) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>Ver</a>
                                 @if ($cobro->estado === 'pagado')
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ route('admin.cobros.edit', $cobro) }}">Editar</a>
+                                    <a class="btn btn-sm btn-outline-secondary btn-icon" href="{{ route('admin.cobros.edit', $cobro) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/></svg></span>Editar</a>
                                 @endif
                             </div>
                         </td>

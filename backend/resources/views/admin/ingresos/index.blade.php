@@ -11,7 +11,7 @@
             <h1 class="page-title">Ingresos</h1>
             <div class="page-subtitle">Resumen y gestion de ingresos registrados.</div>
         </div>
-        <a class="btn btn-aqua px-4" href="{{ route('admin.ingresos.create') }}">Registrar ingreso manual</a>
+        <a class="btn btn-aqua btn-icon px-4" href="{{ route('admin.ingresos.create') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Registrar ingreso manual</a>
     </div>
 
     @if (session('success'))
@@ -70,7 +70,7 @@
                     <option value="activo" @selected($estado === 'activo')>Activo</option>
                     <option value="anulado" @selected($estado === 'anulado')>Anulado</option>
                 </select>
-                <button class="btn btn-outline-info">Filtrar</button>
+                <button class="btn btn-outline-info btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M3 5h18"/><path d="M6 12h12"/><path d="M10 19h4"/></svg></span>Filtrar</button>
             </form>
         </div>
 
@@ -102,9 +102,9 @@
                             <td><span class="badge {{ in_array($mov->estado, ['pagado','activo']) ? 'badge-soft' : 'badge-danger-soft' }}">{{ ucfirst($mov->estado) }}</span></td>
                             <td>
                                 @if ($mov->origen === 'manual')
-                                    <a class="btn btn-sm btn-outline-info" href="{{ route('admin.ingresos.show', $mov->id) }}">Ver</a>
+                                    <a class="btn btn-sm btn-outline-info btn-icon" href="{{ route('admin.ingresos.show', $mov->id) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>Ver</a>
                                 @else
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ route('admin.cobros.show', $mov->id) }}">Ir a Cobros</a>
+                                    <a class="btn btn-sm btn-outline-secondary btn-icon" href="{{ route('admin.cobros.show', $mov->id) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></span>Ir a Cobros</a>
                                 @endif
                             </td>
                         </tr>

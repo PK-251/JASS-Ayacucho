@@ -31,7 +31,7 @@
     </div>
     <div class="col-md-6">
         <label class="form-label fw-semibold">Monto (S/)</label>
-        <input class="form-control" name="monto" value="{{ old('monto', isset($egreso) ? number_format((float) $egreso->monto, 2, '.', '') : '') }}" placeholder="0.00" required>
+        <input class="form-control" type="number" min="0.01" step="0.01" name="monto" value="{{ old('monto', isset($egreso) ? number_format((float) $egreso->monto, 2, '.', '') : '') }}" placeholder="0.00" required>
         <div class="form-text">Mayor a S/{{ number_format((float) $umbral, 2) }} requiere aprobacion.</div>
     </div>
     <div class="col-md-6">

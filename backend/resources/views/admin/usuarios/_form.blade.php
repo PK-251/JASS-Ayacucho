@@ -84,7 +84,7 @@
     </div>
 </div>
 
-<div class="d-flex justify-content-end gap-2 mt-4">
-    <a href="{{ route('admin.usuarios.index') }}" class="btn btn-outline-secondary">Cancelar</a>
-    <button class="btn btn-aqua px-4">{{ $buttonText }}</button>
+<div class="form-actions">
+    <a href="{{ route('admin.usuarios.index') }}" class="btn btn-outline-secondary btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Cancelar</a>
+    <button class="btn btn-aqua btn-icon px-4"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></span>{{ $buttonText }}</button>
 </div>

@@ -24,7 +24,7 @@
     <section class="panel p-4 mb-4" style="border-color:#f59e0b; background:#fff8dd">
         <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
             <div><strong>Primero inicia tu jornada de cobro.</strong><div class="text-secondary">Asi todos los pagos quedan agrupados para el cierre del dia.</div></div>
-            <form method="POST" action="{{ route('operator.cobros.iniciar') }}">@csrf<button class="btn btn-aqua">Iniciar jornada</button></form>
+            <form method="POST" action="{{ route('operator.cobros.iniciar') }}">@csrf<button class="btn btn-aqua btn-icon"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Iniciar jornada</button></form>
         </div>
     </section>
 @endif
@@ -81,17 +81,17 @@
                 <form method="POST" action="{{ route('operator.cobros.store') }}" class="row g-3 mb-3">
                     @csrf
                     <input type="hidden" name="vecino_id" value="{{ $usuario->id }}">
-                    <div class="col-md-6"><label class="form-label fw-semibold">Monto recibido</label><input class="form-control" name="monto_recibido" value="{{ old('monto_recibido', number_format((float) $desglose['total'], 2, '.', '')) }}"></div>
+                    <div class="col-md-6"><label class="form-label fw-semibold">Monto recibido</label><input class="form-control" type="number" min="0" step="0.01" name="monto_recibido" value="{{ old('monto_recibido', number_format((float) $desglose['total'], 2, '.', '')) }}"></div>
                     <div class="col-md-6"><label class="form-label fw-semibold">Metodo</label><select class="form-select" name="metodo_pago"><option value="efectivo">Efectivo</option><option value="yape">Yape</option><option value="plin">Plin</option><option value="transferencia">Transferencia</option><option value="otro">Otro</option></select></div>
                     <div class="col-12"><label class="form-label fw-semibold">Observaciones</label><input class="form-control" name="observaciones" placeholder="Opcional"></div>
                     <div class="col-12 d-flex justify-content-end">
-                        <button class="btn btn-aqua btn-lg" @disabled(! $jornada)>Confirmar pago</button>
+                        <button class="btn btn-aqua btn-icon btn-lg" @disabled(! $jornada)><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></svg></span>Confirmar pago</button>
                     </div>
                 </form>
                 <form method="POST" action="{{ route('operator.cobros.pendiente', $usuario) }}" class="d-flex justify-content-end">
                     @csrf
                     <input type="hidden" name="motivo" value="No se encontro al usuario en la jornada">
-                    <button class="btn btn-outline-warning btn-lg" @disabled(! $jornada)>Marcar pendiente</button>
+                    <button class="btn btn-outline-warning btn-icon btn-lg" @disabled(! $jornada)><span class="action-icon-sm"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Marcar pendiente</button>
                 </form>
             </section>
         @else

@@ -18,7 +18,7 @@
     </div>
     <div class="col-md-6">
         <label class="form-label fw-semibold">Monto (S/)</label>
-        <input class="form-control" name="monto" value="{{ old('monto', isset($ingreso) ? number_format((float) $ingreso->monto, 2, '.', '') : '') }}" placeholder="0.00" required>
+        <input class="form-control" type="number" min="0.01" step="0.01" name="monto" value="{{ old('monto', isset($ingreso) ? number_format((float) $ingreso->monto, 2, '.', '') : '') }}" placeholder="0.00" required>
     </div>
     <div class="col-12">
         <label class="form-label fw-semibold">Concepto</label>

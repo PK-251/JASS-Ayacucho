@@ -15,7 +15,7 @@
         <h1 class="page-title">Control de Asistencia</h1>
         <div class="page-subtitle">Eventos, reuniones, pase de lista y multas por inasistencia.</div>
     </div>
-    <a class="btn btn-aqua" href="{{ route('admin.asistencia.create') }}">+ Crear evento</a>
+    <a class="btn btn-aqua btn-icon" href="{{ route('admin.asistencia.create') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Crear evento</a>
 </div>
 
 @if (session('success'))
@@ -29,7 +29,7 @@
                 <div class="fw-bold text-warning mb-1">{{ $pendiente->titulo }}</div>
                 <div class="text-secondary">Lista pendiente por registrar. {{ $pendiente->total_convocados }} usuarios convocados.</div>
             </div>
-            <a class="btn btn-aqua" href="{{ route('admin.asistencia.show', $pendiente) }}">Pasar lista ahora</a>
+            <a class="btn btn-aqua btn-icon" href="{{ route('admin.asistencia.show', $pendiente) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></svg></span>Pasar lista ahora</a>
         </div>
     </section>
 @endif
@@ -59,7 +59,7 @@
                     <td>{{ $evento->total_convocados }}</td>
                     <td>{{ $evento->estado === 'realizado' ? $asistencia.'%' : '-' }}</td>
                     <td><span class="badge {{ $estadoBadge[$evento->estado] ?? 'badge-soft' }}">{{ str_replace('_', ' ', ucfirst($evento->estado)) }}</span></td>
-                    <td><a class="btn btn-sm btn-outline-info" href="{{ route('admin.asistencia.show', $evento) }}">Ver</a></td>
+                    <td><a class="btn btn-sm btn-outline-info btn-icon" href="{{ route('admin.asistencia.show', $evento) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></span>Ver</a></td>
                 </tr>
             @empty
                 <tr><td colspan="8" class="text-center text-secondary py-4">No hay eventos registrados.</td></tr>

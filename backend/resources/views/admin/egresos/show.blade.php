@@ -11,10 +11,10 @@
             <h1 class="page-title">{{ $egreso->numero_serie }}</h1>
             <div class="page-subtitle">{{ $egreso->fecha_egreso?->format('d/m/Y') }} · {{ $egreso->categoria?->nombre }}</div>
         </div>
-        <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary" href="{{ route('admin.egresos.index') }}">Volver</a>
+        <div class="page-actions">
+            <a class="btn btn-outline-secondary btn-icon" href="{{ route('admin.egresos.index') }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg></span>Volver</a>
             @if (in_array($egreso->estado, ['aprobado', 'pendiente_aprobacion']))
-                <a class="btn btn-aqua" href="{{ route('admin.egresos.edit', $egreso) }}">Editar</a>
+                <a class="btn btn-aqua btn-icon" href="{{ route('admin.egresos.edit', $egreso) }}"><span class="action-icon-sm"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="m16.5 3.5 4 4L8 20H4v-4L16.5 3.5Z"/></svg></span>Editar</a>
             @endif
         </div>
     </div>
@@ -53,7 +53,7 @@
                 </dl>
             </section>
 
-            <section class="panel p-4">
+            <section class="panel p-4 form-card">
                 <h2 class="h5 fw-bold mb-3">Proveedor y respaldo</h2>
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Proveedor</dt><dd class="col-sm-8">{{ $egreso->proveedor?->nombre ?? 'Sin proveedor' }}</dd>
@@ -98,13 +98,13 @@
                     </form>
                 </section>
             @elseif ($egreso->estado === 'rechazado')
-                <section class="panel p-4">
+                <section class="panel p-4 form-card">
                     <h2 class="h5 fw-bold text-danger mb-3">Egreso rechazado</h2>
                     <p class="mb-1"><strong>Motivo:</strong> {{ $egreso->motivo_rechazo }}</p>
                     <p class="mb-0"><strong>Fecha:</strong> {{ $egreso->fecha_rechazo?->format('d/m/Y H:i') }}</p>
                 </section>
             @else
-                <section class="panel p-4">
+                <section class="panel p-4 form-card">
                     <h2 class="h5 fw-bold text-danger mb-3">Egreso anulado</h2>
                     <p class="mb-1"><strong>Motivo:</strong> {{ $egreso->motivo_anulacion }}</p>
                     <p class="mb-0"><strong>Fecha:</strong> {{ $egreso->fecha_anulacion?->format('d/m/Y H:i') }}</p>
