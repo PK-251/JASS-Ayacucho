@@ -11,3 +11,5 @@ storage/framework/views/*
 .env.backup*
 docker/mariadb/init/*.sql
 docker/mariadb/init/*.sql.gz
+
+public/storage
