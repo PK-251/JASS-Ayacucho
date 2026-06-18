@@ -1,90 +1,177 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name') }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --sidebar-top: #28c6d7;
-            --sidebar-bottom: #0b8ea6;
-            --aqua: #12acc2;
-            --aqua-deep: #087b91;
-            --aqua-soft: #e9fdff;
-            --line: #b7edf4;
-            --ink: #183247;
-            --muted: #74879a;
-            --success: #18b981;
-            --danger: #ef4444;
-        }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: #eafcff;
-            color: var(--ink);
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-        .app-shell {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 280px minmax(0, 1fr);
-            background: linear-gradient(180deg, #f7feff 0%, #e6fbff 100%);
-        }
-        .sidebar {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: linear-gradient(180deg, var(--sidebar-top) 0%, #18b7ca 46%, var(--sidebar-bottom) 100%);
-            color: #fff;
-            box-shadow: 12px 0 34px rgba(0, 113, 132, .13);
-        }
-        .brand-block {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 26px 20px 24px;
-            border-bottom: 1px solid rgba(255,255,255,.18);
-        }
-        .brand-icon {
-            width: 66px;
-            height: 66px;
-            display: grid;
-            place-items: center;
-            border-radius: 10px;
-            background: rgba(255,255,255,.24);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
-            overflow: hidden;
-        }
-        .brand-icon img {
-            width: 62px;
-            height: 46px;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,.12));
-        }
-        .brand-title {
-            font-size: 1.26rem;
-            font-weight: 850;
-            letter-spacing: .02em;
-            line-height: 1.02;
-        }
-        .brand-subtitle {
-            margin-top: 5px;
-            font-size: .88rem;
-            color: rgba(255,255,255,.82);
-        }
-        .nav-wrap {
-            padding: 24px 14px 18px;
-            flex: 1;
-        }
-        .nav-section {
-            margin: 0 0 9px 6px;
-            font-size: .78rem;
-            font-weight: 850;
-            letter-spacing: .05em;
-            color: rgba(255,255,255,.62);
-        }
+<!doctype html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ config('app.name') }}</title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+
+        :root {
+
+            --sidebar-top: #28c6d7;
+
+            --sidebar-bottom: #0b8ea6;
+
+            --aqua: #12acc2;
+
+            --aqua-deep: #087b91;
+
+            --aqua-soft: #e9fdff;
+
+            --line: #b7edf4;
+
+            --ink: #183247;
+
+            --muted: #74879a;
+
+            --success: #18b981;
+
+            --danger: #ef4444;
+
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            background: #eafcff;
+
+            color: var(--ink);
+
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+        }
+
+        .app-shell {
+
+            min-height: 100vh;
+
+            display: grid;
+
+            grid-template-columns: 280px minmax(0, 1fr);
+
+            background: linear-gradient(180deg, #f7feff 0%, #e6fbff 100%);
+
+        }
+
+        .sidebar {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+            background: linear-gradient(180deg, var(--sidebar-top) 0%, #18b7ca 46%, var(--sidebar-bottom) 100%);
+
+            color: #fff;
+
+            box-shadow: 12px 0 34px rgba(0, 113, 132, .13);
+
+        }
+
+        .brand-block {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 26px 20px 24px;
+
+            border-bottom: 1px solid rgba(255,255,255,.18);
+
+        }
+
+        .brand-icon {
+
+            width: 66px;
+
+            height: 66px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,.24);
+
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
+
+            overflow: hidden;
+
+        }
+
+        .brand-icon img {
+
+            width: 62px;
+
+            height: 46px;
+
+            object-fit: contain;
+
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,.12));
+
+        }
+
+        .brand-title {
+
+            font-size: 1.26rem;
+
+            font-weight: 850;
+
+            letter-spacing: .02em;
+
+            line-height: 1.02;
+
+        }
+
+        .brand-subtitle {
+
+            margin-top: 5px;
+
+            font-size: .88rem;
+
+            color: rgba(255,255,255,.82);
+
+        }
+
+        .nav-wrap {
+
+            padding: 24px 14px 18px;
+
+            flex: 1;
+
+        }
+
+        .nav-section {
+
+            margin: 0 0 9px 6px;
+
+            font-size: .78rem;
+
+            font-weight: 850;
+
+            letter-spacing: .05em;
+
+            color: rgba(255,255,255,.62);
+
+        }
+
         .nav-link-app {
             display: flex;
             align-items: center;
@@ -120,98 +207,209 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
+        .nav-icon svg :is(path, circle, rect, line, polyline, ellipse),
+        .btn-icon svg :is(path, circle, rect, line, polyline, ellipse),
+        .action-icon svg :is(path, circle, rect, line, polyline, ellipse),
+        .action-icon-sm svg :is(path, circle, rect, line, polyline, ellipse) {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.25;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
         .nav-link-app.active .nav-icon,
         .nav-link-app:hover .nav-icon { color: #fff; }
-        .user-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 16px;
-            border-top: 1px solid rgba(255,255,255,.20);
-            background: rgba(4, 122, 143, .20);
-        }
-        .user-avatar {
-            width: 42px;
-            height: 42px;
-            display: grid;
-            place-items: center;
-            border-radius: 999px;
-            background: rgba(255,255,255,.28);
-            color: #fff;
-            font-weight: 800;
-        }
-        .user-name { font-weight: 800; line-height: 1.05; }
-        .user-role { font-size: .82rem; color: rgba(255,255,255,.72); }
-        main {
-            min-width: 0;
-            padding: 30px 34px 42px;
-            background: linear-gradient(180deg, #eaffff 0%, #f4ffff 100%);
-        }
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 18px;
-            margin-bottom: 28px;
-        }
-        .page-title { font-size: 2rem; font-weight: 850; margin: 0; color: var(--ink); }
-        .page-subtitle { color: var(--muted); margin-top: 2px; }
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 16px;
-            border-radius: 999px;
-            background: #defbf2;
-            color: #087b62;
-            font-size: .9rem;
-            font-weight: 800;
-            border: 1px solid #bff2e1;
-        }
-        .status-pill::before {
-            content: "";
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-            background: #10b981;
-        }
-        .metric-card,
-        .panel {
-            background: rgba(255,255,255,.88);
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            box-shadow: 0 16px 38px rgba(14, 122, 144, .08);
-        }
+        .user-card {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 18px 16px;
+
+            border-top: 1px solid rgba(255,255,255,.20);
+
+            background: rgba(4, 122, 143, .20);
+
+        }
+
+        .user-avatar {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 999px;
+
+            background: rgba(255,255,255,.28);
+
+            color: #fff;
+
+            font-weight: 800;
+
+        }
+
+        .user-name { font-weight: 800; line-height: 1.05; }
+
+        .user-role { font-size: .82rem; color: rgba(255,255,255,.72); }
+
+        main {
+
+            min-width: 0;
+
+            padding: 30px 34px 42px;
+
+            background: linear-gradient(180deg, #eaffff 0%, #f4ffff 100%);
+
+        }
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 18px;
+
+            margin-bottom: 28px;
+
+        }
+
+        .page-title { font-size: 2rem; font-weight: 850; margin: 0; color: var(--ink); }
+
+        .page-subtitle { color: var(--muted); margin-top: 2px; }
+
+        .status-pill {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 8px 16px;
+
+            border-radius: 999px;
+
+            background: #defbf2;
+
+            color: #087b62;
+
+            font-size: .9rem;
+
+            font-weight: 800;
+
+            border: 1px solid #bff2e1;
+
+        }
+
+        .status-pill::before {
+
+            content: "";
+
+            width: 8px;
+
+            height: 8px;
+
+            border-radius: 999px;
+
+            background: #10b981;
+
+        }
+
+        .metric-card,
+
+        .panel {
+
+            background: rgba(255,255,255,.88);
+
+            border: 1px solid var(--line);
+
+            border-radius: 8px;
+
+            box-shadow: 0 16px 38px rgba(14, 122, 144, .08);
+
+        }
+
         .metric-card { min-height: 118px; padding: 22px; position: relative; overflow: hidden; }
-        .metric-card::after { content: ""; position:absolute; right:14px; top:14px; width:42px; height:42px; border-radius:8px; background:rgba(18,172,194,.10); pointer-events:none; }
-        .metric-label { color: #74879a; font-size: .95rem; font-weight: 650; }
-        .metric-value { font-size: 2.15rem; font-weight: 850; color: #057e96; line-height: 1.05; margin-top: 8px; }
-        .metric-value.success { color: #10b981; }
-        .metric-value.danger { color: #ef4444; }
-        .badge-soft { background: #dff9f2; color: #07845e; }
-        .badge-warning-soft { background: #fff2c2; color: #b77905; }
-        .badge-danger-soft { background: #ffe2e2; color: #df3c3c; }
-        .table-panel { padding: 18px; }
-        .table { --bs-table-bg: transparent; --bs-table-color: var(--ink); margin-bottom: 0; }
-        .table thead th {
-            background: #effbff;
-            color: #0b8ea6;
-            font-size: .84rem;
-            text-transform: uppercase;
-            border-bottom: 1px solid #c4eef5;
-        }
-        .table tbody td {
-            border-color: #d9f2f6;
-            vertical-align: middle;
-        }
-        .series-link { color: #07a8c2; font-weight: 800; text-decoration: none; }
-        .btn-aqua {
-            background: #087f95;
-            color: #fff;
-            border: 0;
-            border-radius: 7px;
-            box-shadow: 0 10px 20px rgba(8,127,149,.18);
-        }
+        .metric-card::after { content: ""; position:absolute; right:14px; top:14px; width:42px; height:42px; border-radius:8px; background:rgba(18,172,194,.10); pointer-events:none; }
+        .metric-icon { position:absolute; right:14px; top:14px; width:42px; height:42px; display:grid; place-items:center; z-index:1; pointer-events:none; }
+        .metric-icon svg { width:22px; height:22px; display:block; stroke:currentColor; stroke-width:2.25; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+        .metric-icon svg :is(path, circle, rect, line, polyline, ellipse) { fill:none; stroke:currentColor; stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round; }
+        .metric-icon--default { color:#0b8ea6; }
+        .metric-icon--success { color:#10b981; }
+        .metric-icon--warning { color:#f59e0b; }
+        .metric-icon--danger { color:#ef4444; }
+        .metric-card:has(.metric-icon--success)::after { background:rgba(16,185,129,.11); }
+        .metric-card:has(.metric-icon--warning)::after { background:rgba(245,158,11,.12); }
+        .metric-card:has(.metric-icon--danger)::after { background:rgba(239,68,68,.10); }
+
+        .metric-label { color: #74879a; font-size: .95rem; font-weight: 650; }
+
+        .metric-value { font-size: 2.15rem; font-weight: 850; color: #057e96; line-height: 1.05; margin-top: 8px; }
+
+        .metric-value.success { color: #10b981; }
+
+        .metric-value.danger { color: #ef4444; }
+
+        .metric-value.warning { color: #f59e0b; }
+
+        .badge-soft { background: #dff9f2; color: #07845e; }
+
+        .badge-warning-soft { background: #fff2c2; color: #b77905; }
+
+        .badge-danger-soft { background: #ffe2e2; color: #df3c3c; }
+
+        .table-panel { padding: 18px; }
+
+        .table { --bs-table-bg: transparent; --bs-table-color: var(--ink); margin-bottom: 0; }
+
+        .table thead th {
+
+            background: #effbff;
+
+            color: #0b8ea6;
+
+            font-size: .84rem;
+
+            text-transform: uppercase;
+
+            border-bottom: 1px solid #c4eef5;
+
+        }
+
+        .table tbody td {
+
+            border-color: #d9f2f6;
+
+            vertical-align: middle;
+
+        }
+
+        .series-link { color: #07a8c2; font-weight: 800; text-decoration: none; }
+
+        .btn-aqua {
+
+            background: #087f95;
+
+            color: #fff;
+
+            border: 0;
+
+            border-radius: 7px;
+
+            box-shadow: 0 10px 20px rgba(8,127,149,.18);
+
+        }
+
         .btn-aqua:hover { background: #066d80; color: #fff; }
         .btn, .form-control, .form-select { border-radius: 7px; }
         .btn-icon { display:inline-flex; align-items:center; justify-content:center; gap:9px; font-weight:800; }
@@ -219,7 +417,8 @@
         .btn-icon svg, .action-icon svg, .action-icon-sm svg { width:18px; height:18px; stroke:currentColor; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
         .soft-field { background:#f7feff; border:1px solid #b7edf4; }
         .sidebar-logout { border:0; background:transparent; color:rgba(255,255,255,.78); padding:0; font-size:.82rem; text-decoration:none; }
-        .sidebar-logout:hover { color:#fff; text-decoration:underline; }
+        .sidebar-logout:hover { color:#fff; text-decoration:underline; }
+
 
         /* Polish layer: shared screens */
         .content-stack { display:flex; flex-direction:column; gap:24px; }
@@ -242,7 +441,6 @@
         .btn-sm { font-weight:800; }
         .metric-card { min-height:128px; }
         .metric-card .badge { font-weight:800; border-radius:8px; padding:.42rem .62rem; }
-        .metric-card:nth-child(odd)::after { background:rgba(16,185,129,.11); }
         .status-pill { display:inline-flex; align-items:center; gap:8px; border-radius:999px; background:#dff9f2; color:#087b5f; font-weight:850; padding:8px 14px; font-size:.85rem; }
         .status-pill::before { content:""; width:7px; height:7px; border-radius:50%; background:#10b981; box-shadow:0 0 0 4px rgba(16,185,129,.13); }
         .table-panel { overflow:hidden; }
@@ -307,48 +505,93 @@
         .sticky-bottom-action { position:sticky; bottom:0; z-index:5; margin:24px -18px -18px; padding:16px 18px; background:rgba(247,254,255,.94); border-top:1px solid #c5eef4; backdrop-filter:blur(10px); }
         @media (max-width: 680px) { .form-actions .btn { width:100%; } .detail-hero { align-items:stretch; } .detail-hero .text-end { text-align:left !important; } }
 
-        @media (max-width: 920px) {
-            .app-shell { grid-template-columns: 1fr; }
-            .sidebar { min-height: auto; }
-            .nav-wrap { padding-bottom: 10px; }
-            main { padding: 22px 18px 34px; }
-            .topbar { align-items: stretch; flex-direction: column; }
-        }
-    </style>
-    @stack('styles')
-</head>
-<body>
-<div class="app-shell">
-    <aside class="sidebar">
-        <div class="brand-block">
-            <div class="brand-icon">
-                <img src="{{ asset('assets/logo-water.svg') }}" alt="Logo J.A.S.S. Quilcata">
-            </div>
-            <div>
-                <div class="brand-title">J.A.S.S. QUILCATA</div>
-                <div class="brand-subtitle">Sara-Sara, Ayacucho</div>
-            </div>
-        </div>
-
-        <nav class="nav-wrap">
-            @yield('nav')
-        </nav>
-
-        <div class="user-card">
-            <div class="user-avatar">{{ strtoupper(substr(auth()->user()?->nombres ?? 'U', 0, 1).substr(auth()->user()?->apellidos ?? 'S', 0, 1)) }}</div>
-            <div class="flex-grow-1">
-                <div class="user-name">{{ auth()->user()?->full_name ?? 'Usuario' }}</div>
-                <div class="user-role">{{ auth()->user()?->role?->nombre ?? 'Sistema' }}</div>
-                <form method="POST" action="{{ route('logout') }}" class="mt-1">
-                    @csrf
-                    <button class="sidebar-logout" type="submit">Cerrar sesion</button>
-                </form>
-            </div>
-        </div>
-    </aside>
-    <main>
-        @yield('content')
-    </main>
-</div>
-</body>
-</html>
+        @media (max-width: 920px) {
+
+            .app-shell { grid-template-columns: 1fr; }
+
+            .sidebar { min-height: auto; }
+
+            .nav-wrap { padding-bottom: 10px; }
+
+            main { padding: 22px 18px 34px; }
+
+            .topbar { align-items: stretch; flex-direction: column; }
+
+        }
+
+    </style>
+
+    @stack('styles')
+
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+
+        <div class="brand-block">
+
+            <div class="brand-icon">
+
+                <img src="{{ asset('assets/logo-water.svg') }}" alt="Logo J.A.S.S. Quilcata">
+
+            </div>
+
+            <div>
+
+                <div class="brand-title">J.A.S.S. QUILCATA</div>
+
+                <div class="brand-subtitle">Sara-Sara, Ayacucho</div>
+
+            </div>
+
+        </div>
+
+
+
+        <nav class="nav-wrap">
+
+            @yield('nav')
+
+        </nav>
+
+
+
+        <div class="user-card">
+
+            <div class="user-avatar">{{ strtoupper(substr(auth()->user()?->nombres ?? 'U', 0, 1).substr(auth()->user()?->apellidos ?? 'S', 0, 1)) }}</div>
+
+            <div class="flex-grow-1">
+
+                <div class="user-name">{{ auth()->user()?->full_name ?? 'Usuario' }}</div>
+
+                <div class="user-role">{{ auth()->user()?->role?->nombre ?? 'Sistema' }}</div>
+
+                <form method="POST" action="{{ route('logout') }}" class="mt-1">
+
+                    @csrf
+
+                    <button class="sidebar-logout" type="submit">Cerrar sesion</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main>
+
+        @yield('content')
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
+

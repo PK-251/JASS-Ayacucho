@@ -19,10 +19,10 @@
     @endif
 
     <div class="row g-3 mb-4">
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Cobros mes</div><div class="metric-value">{{ $cobrosMes }}</div><span class="badge badge-soft mt-2">Pagados</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Total recaudado</div><div class="metric-value">S/{{ number_format((float) $totalRecaudado, 2) }}</div><span class="badge badge-soft mt-2">Mayo {{ $anio }}</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Anulados</div><div class="metric-value danger">{{ $anulados }}</div><span class="badge badge-danger-soft mt-2">Auditoria</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Pendientes</div><div class="metric-value" style="color:#f59e0b">{{ $pendientes }}</div><span class="badge badge-warning-soft mt-2">Por cobrar</span></div></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Cobros mes" icon="receipt" badge="Pagados">{{ $cobrosMes }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Total recaudado" icon="wallet" :badge="'Mayo ' . $anio">S/{{ number_format((float) $totalRecaudado, 2) }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Anulados" icon="ban" tone="danger" valueClass="danger" badge="Auditoria" badgeClass="badge-danger-soft">{{ $anulados }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Pendientes" icon="clock" tone="warning" valueClass="warning" badge="Por cobrar" badgeClass="badge-warning-soft">{{ $pendientes }}</x-metric-card></div>
     </div>
 
     <section class="panel table-panel">

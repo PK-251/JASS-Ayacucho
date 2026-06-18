@@ -21,15 +21,15 @@ class CobroController extends Controller
 {
     public function index(Request $request): View
     {
-        $anio = (int) $request->query('anio', 2026);
-        $mes = (int) $request->query('mes', 5);
+        $anio = (int) $request->query('anio', now()->year);
+        $mes = (int) $request->query('mes', now()->month);
         $buscar = trim((string) $request->query('buscar'));
         $estado = (string) $request->query('estado', '');
 
         $query = Cobro::query()
             ->with(['vecino', 'operador'])
-            ->whereYear('fecha_cobro', $anio)
-            ->whereMonth('fecha_cobro', $mes)
+            ->where('periodo_anio', $anio)
+            ->where('periodo_mes', $mes)
             ->when($estado !== '', fn ($q) => $q->where('estado', $estado))
             ->when($buscar !== '', function ($q) use ($buscar) {
                 $q->where(function ($inner) use ($buscar) {
@@ -46,7 +46,18 @@ class CobroController extends Controller
             ->orderByDesc('hora_cobro');
 
         $cobros = $query->paginate(10)->withQueryString();
-        $baseMes = Cobro::whereYear('fecha_cobro', $anio)->whereMonth('fecha_cobro', $mes);
+
+        $stats = Cobro::query()
+            ->where('periodo_anio', $anio)
+            ->where('periodo_mes', $mes)
+            ->selectRaw("
+                COUNT(CASE WHEN estado = 'pagado' THEN 1 END) AS cobros_mes,
+                COALESCE(SUM(CASE WHEN estado = 'pagado' THEN monto_recibido END), 0) AS total_recaudado,
+                COUNT(CASE WHEN estado = 'anulado' THEN 1 END) AS anulados
+            ")
+            ->first();
+
+        $pendientes = PagoPendiente::where('estado', 'pendiente')->count();
 
         return view('admin.cobros.index', [
             'cobros' => $cobros,
@@ -54,10 +65,10 @@ class CobroController extends Controller
             'estado' => $estado,
             'anio' => $anio,
             'mes' => $mes,
-            'cobrosMes' => (clone $baseMes)->where('estado', 'pagado')->count(),
-            'totalRecaudado' => (clone $baseMes)->where('estado', 'pagado')->sum('monto_recibido'),
-            'anulados' => (clone $baseMes)->where('estado', 'anulado')->count(),
-            'pendientes' => PagoPendiente::where('estado', 'pendiente')->count(),
+            'cobrosMes' => (int) $stats->cobros_mes,
+            'totalRecaudado' => (float) $stats->total_recaudado,
+            'anulados' => (int) $stats->anulados,
+            'pendientes' => $pendientes,
         ]);
     }
 
@@ -65,8 +76,8 @@ class CobroController extends Controller
     {
         $buscar = trim((string) $request->query('buscar'));
         $usuarioId = $request->integer('usuario_id');
-        $anio = (int) $request->query('anio', 2026);
-        $mes = (int) $request->query('mes', 5);
+        $anio = (int) $request->query('anio', now()->year);
+        $mes = (int) $request->query('mes', now()->month);
 
         $usuarios = Vecino::query()
             ->with('categoria')

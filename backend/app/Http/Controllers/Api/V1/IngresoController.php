@@ -16,13 +16,22 @@ class IngresoController extends Controller
 
     public function index(Request $request)
     {
-        $anio = (int) $request->query('anio', 2026);
-        $mes = (int) $request->query('mes', 5);
+        $anio = (int) $request->query('anio', now()->year);
+        $mes = (int) $request->query('mes', now()->month);
         $buscar = trim((string) $request->query('buscar'));
+
+        $inicio = sprintf('%04d-%02d-01', $anio, $mes);
+        $fin    = date('Y-m-t', strtotime($inicio));
+
         $query = DB::table('vista_ingresos_completa')
-            ->whereYear('fecha_ingreso', $anio)
-            ->whereMonth('fecha_ingreso', $mes)
-            ->when($buscar !== '', fn ($q) => $q->where('numero_serie', 'like', "%{$buscar}%")->orWhere('vecino_nombre', 'like', "%{$buscar}%")->orWhere('concepto', 'like', "%{$buscar}%"))
+            ->whereBetween('fecha_ingreso', [$inicio, $fin]) // Optimizado: whereBetween usa idx_ingresos_periodo
+            ->when($buscar !== '', function ($q) use ($buscar) {
+                $q->where(function ($inner) use ($buscar) {
+                    $inner->where('numero_serie', 'like', "%{$buscar}%")
+                        ->orWhere('vecino_nombre', 'like', "%{$buscar}%")
+                        ->orWhere('concepto', 'like', "%{$buscar}%");
+                });
+            })
             ->orderByDesc('fecha_ingreso')
             ->orderByDesc('hora');
 

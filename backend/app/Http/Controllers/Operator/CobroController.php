@@ -40,14 +40,10 @@ class CobroController extends Controller
             })
             ->orderBy('codigo')
             ->limit(10)
-            ->get()
-            ->map(function ($vecino) {
-                $vecino->deuda_total = $this->desglose($vecino, 2026, 5)['total'];
-                return $vecino;
-            });
+            ->get();
 
         $usuario = $usuarioId ? Vecino::with('categoria')->whereNull('deleted_at')->find($usuarioId) : $usuarios->first();
-        $desglose = $usuario ? $this->desglose($usuario, 2026, 5) : null;
+        $desglose = $usuario ? $this->desglose($usuario) : null;
 
         $stats = [
             'cobrados' => Cobro::where('operador_id', auth()->id())->whereDate('fecha_cobro', now()->toDateString())->where('estado', 'pagado')->count(),
@@ -95,8 +91,8 @@ class CobroController extends Controller
                     (int) $data['vecino_id'],
                     auth()->id(),
                     $jornada->id,
-                    2026,
-                    5,
+                    (int) now()->year,
+                    (int) now()->month,
                     $this->money($data['monto_recibido']),
                     $data['metodo_pago'],
                     $data['observaciones'] ?? null,
@@ -144,8 +140,8 @@ class CobroController extends Controller
 
         PagoPendiente::firstOrCreate([
             'vecino_id' => $vecino->id,
-            'periodo_anio' => 2026,
-            'periodo_mes' => 5,
+            'periodo_anio' => (int) now()->year,
+            'periodo_mes' => (int) now()->month,
             'estado' => 'pendiente',
         ], [
             'monto_pendiente' => max(0.01, $this->money($desglose['cuota'])),

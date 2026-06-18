@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        APP_ENV: ${APP_ENV:-local}
     container_name: jass_app
     restart: unless-stopped
     working_dir: /var/www/html

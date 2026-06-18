@@ -35,10 +35,10 @@
 @endif
 
 <div class="row g-3 mb-4">
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Listas pendientes</div><div class="metric-value" style="color:#f59e0b">{{ $kpis['pendientes'] }}</div><span class="badge badge-warning-soft mt-2">Requieren atencion</span></div></div>
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Proximos eventos</div><div class="metric-value">{{ $kpis['proximos'] }}</div><span class="badge badge-soft mt-2">Programados</span></div></div>
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Realizados mes</div><div class="metric-value success">{{ $kpis['realizados_mes'] }}</div><span class="badge badge-soft mt-2">Mayo 2026</span></div></div>
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Multas activas</div><div class="metric-value danger">{{ $kpis['multas_pendientes'] }}</div><span class="badge badge-danger-soft mt-2">Inasistencia</span></div></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Listas pendientes" icon="clipboard-list" tone="warning" valueClass="warning" badge="Requieren atencion" badgeClass="badge-warning-soft">{{ $kpis['pendientes'] }}</x-metric-card></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Proximos eventos" icon="calendar" badge="Programados">{{ $kpis['proximos'] }}</x-metric-card></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Realizados mes" icon="calendar-check" tone="success" valueClass="success" :badge="ucfirst(now()->locale('es')->translatedFormat('F Y'))">{{ $kpis['realizados_mes'] }}</x-metric-card></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Multas activas" icon="gavel" tone="danger" valueClass="danger" badge="Inasistencia" badgeClass="badge-danger-soft">{{ $kpis['multas_pendientes'] }}</x-metric-card></div>
 </div>
 
 <section class="panel table-panel">

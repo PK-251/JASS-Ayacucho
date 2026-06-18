@@ -26,8 +26,11 @@ class ReporteController extends Controller
             ->orderByDesc('periodo_mes')
             ->paginate(8);
 
-        $actual = ReporteMensual::where('periodo_anio', 2026)->where('periodo_mes', 5)->where('es_reporte_parcial', false)->first();
-        $resumen = $actual ?: (object) $this->buildSnapshot(2026, 5);
+        $anio = (int) now()->year;
+        $mes = (int) now()->month;
+
+        $actual = ReporteMensual::where('periodo_anio', $anio)->where('periodo_mes', $mes)->where('es_reporte_parcial', false)->first();
+        $resumen = $actual ?: (object) $this->buildSnapshot($anio, $mes);
 
         $tendencia = ReporteMensual::whereIn('estado', ['aprobado', 'pendiente_aprobacion'])
             ->where('es_reporte_parcial', false)
@@ -60,8 +63,8 @@ class ReporteController extends Controller
             'periodo_mes' => ['nullable', 'integer', 'between:1,12'],
         ]);
 
-        $anio = (int) ($data['periodo_anio'] ?? 2026);
-        $mes = (int) ($data['periodo_mes'] ?? 5);
+        $anio = (int) ($data['periodo_anio'] ?? now()->year);
+        $mes = (int) ($data['periodo_mes'] ?? now()->month);
 
         try {
             DB::statement(

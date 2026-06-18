@@ -30,9 +30,9 @@
 @endif
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Cobrados hoy</div><div class="metric-value">{{ $stats['cobrados'] }}</div></div></div>
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Recaudado</div><div class="metric-value">S/{{ number_format((float) $stats['recaudado'], 2) }}</div></div></div>
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Pendientes</div><div class="metric-value" style="color:#f59e0b">{{ $stats['pendientes'] }}</div></div></div>
+    <div class="col-md-4"><x-metric-card label="Cobrados hoy" icon="receipt">{{ $stats['cobrados'] }}</x-metric-card></div>
+    <div class="col-md-4"><x-metric-card label="Recaudado" icon="wallet">S/{{ number_format((float) $stats['recaudado'], 2) }}</x-metric-card></div>
+    <div class="col-md-4"><x-metric-card label="Pendientes" icon="clock" tone="warning" valueClass="warning">{{ $stats['pendientes'] }}</x-metric-card></div>
 </div>
 
 <div class="row g-3">
@@ -46,7 +46,6 @@
                     <a class="panel p-3 text-decoration-none {{ $usuario && $usuario->id === $item->id ? 'border-info' : '' }}" style="box-shadow:none" href="{{ route('operator.cobros.index', ['usuario_id' => $item->id, 'buscar' => $buscar]) }}">
                         <div class="d-flex justify-content-between align-items-center">
                             <div><strong>{{ $item->full_name }}</strong><div class="text-secondary small">{{ $item->codigo }} · {{ $item->direccion }}</div></div>
-                            <span class="badge {{ $item->deuda_total > 0 ? 'badge-warning-soft' : 'badge-soft' }}">S/{{ number_format((float) $item->deuda_total, 2) }}</span>
                         </div>
                     </a>
                 @endforeach
@@ -69,7 +68,7 @@
                 <h2 class="h5 fw-bold mb-3">Detalle de cobro</h2>
                 <table class="table">
                     <tbody>
-                        <tr><td>Cuota Mayo 2026</td><td class="text-end">S/{{ number_format((float) $desglose['cuota'], 2) }}</td></tr>
+                        <tr><td>Cuota {{ ucfirst(now()->locale('es')->translatedFormat('F')) }} {{ now()->year }}</td><td class="text-end">S/{{ number_format((float) $desglose['cuota'], 2) }}</td></tr>
                         <tr><td>Deuda anterior</td><td class="text-end text-danger">S/{{ number_format((float) $desglose['deuda_cuotas'], 2) }}</td></tr>
                         <tr><td>Multas pendientes</td><td class="text-end text-danger">S/{{ number_format((float) $desglose['deuda_multas'], 2) }}</td></tr>
                         <tr><th>Total a cobrar</th><th class="text-end fs-3 text-info">S/{{ number_format((float) $desglose['total'], 2) }}</th></tr>

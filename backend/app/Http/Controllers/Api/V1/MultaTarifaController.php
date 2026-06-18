@@ -8,6 +8,7 @@ use App\Models\CategoriaServicio;
 use App\Models\Multa;
 use App\Models\Tarifa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -42,6 +43,8 @@ class MultaTarifaController extends Controller
             'created_by' => $request->user()->id,
         ]);
 
+        Cache::forget(CatalogController::CACHE_KEY);
+
         return $this->created($multa, 'Multa creada correctamente.');
     }
 
@@ -57,12 +60,16 @@ class MultaTarifaController extends Controller
         ]);
         $multa->update([...$data, 'activa' => (bool) ($data['activa'] ?? false), 'updated_by' => $request->user()->id]);
 
+        Cache::forget(CatalogController::CACHE_KEY);
+
         return $this->ok($multa->fresh(), 'Multa actualizada correctamente.');
     }
 
     public function destroyMulta(Request $request, Multa $multa)
     {
         $multa->update(['activa' => false, 'updated_by' => $request->user()->id, 'deleted_at' => now()]);
+
+        Cache::forget(CatalogController::CACHE_KEY);
 
         return $this->ok(null, 'Multa desactivada correctamente.');
     }
@@ -83,6 +90,8 @@ class MultaTarifaController extends Controller
             ]);
             Tarifa::create([...$data, 'activa' => true, 'created_by' => $request->user()->id]);
         });
+
+        Cache::forget(CatalogController::CACHE_KEY);
 
         return $this->created(Tarifa::with('categoria')->where('categoria_id', $data['categoria_id'])->where('activa', true)->first(), 'Tarifa actualizada correctamente.');
     }

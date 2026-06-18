@@ -37,13 +37,20 @@ class UsuarioController extends Controller
 
         $base = Vecino::whereNull('deleted_at');
 
+        $counts = (clone $base)->selectRaw("
+            COUNT(*) as total_usuarios,
+            COUNT(CASE WHEN estado = 'activo' THEN 1 END) as activos,
+            COUNT(CASE WHEN estado = 'suspendido' THEN 1 END) as suspendidos,
+            COUNT(CASE WHEN estado = 'cortado' THEN 1 END) as cortados
+        ")->first();
+
         return view('admin.usuarios.index', [
             'usuarios' => $usuarios,
             'buscar' => $search,
-            'totalUsuarios' => (clone $base)->count(),
-            'activos' => (clone $base)->where('estado', 'activo')->count(),
-            'suspendidos' => (clone $base)->where('estado', 'suspendido')->count(),
-            'cortados' => (clone $base)->where('estado', 'cortado')->count(),
+            'totalUsuarios' => (int) $counts->total_usuarios,
+            'activos' => (int) $counts->activos,
+            'suspendidos' => (int) $counts->suspendidos,
+            'cortados' => (int) $counts->cortados,
         ]);
     }
 

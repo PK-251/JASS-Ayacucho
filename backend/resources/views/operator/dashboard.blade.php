@@ -8,7 +8,7 @@
 <div class="topbar">
     <div>
         <h1 class="page-title">Inicio</h1>
-        <div class="page-subtitle">Miercoles, 13 de Mayo 2026</div>
+        <div class="page-subtitle">{{ ucfirst(now()->locale('es')->translatedFormat('l, j \\d\\e F Y')) }}</div>
     </div>
     <span class="status-pill">{{ $jornada ? 'Jornada activa' : 'En linea' }}</span>
 </div>
@@ -23,9 +23,21 @@
 </section>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Cobros realizados hoy</div><div class="metric-value">{{ $cobrosHoy }}</div><span class="small">S/{{ number_format((float) $recaudadoHoy, 2) }} recaudados</span></div></div>
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Usuarios pendientes</div><div class="metric-value" style="color:#f59e0b">{{ $pendientes }}</div><span class="small">Por cobrar en jornada actual</span></div></div>
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Proximo evento</div><div class="metric-value fs-4">{{ $proximoEvento?->titulo ?? 'Sin evento' }}</div><span class="small">{{ $proximoEvento?->fecha_evento?->format('d/m/Y') }}</span></div></div>
+    <div class="col-md-4">
+        <x-metric-card label="Cobros realizados hoy" icon="receipt">{{ $cobrosHoy }}
+            <x-slot:footer><span class="small">S/{{ number_format((float) $recaudadoHoy, 2) }} recaudados</span></x-slot:footer>
+        </x-metric-card>
+    </div>
+    <div class="col-md-4">
+        <x-metric-card label="Usuarios pendientes" icon="clock" tone="warning" valueClass="warning">{{ $pendientes }}
+            <x-slot:footer><span class="small">Por cobrar en jornada actual</span></x-slot:footer>
+        </x-metric-card>
+    </div>
+    <div class="col-md-4">
+        <x-metric-card label="Proximo evento" icon="calendar" valueClass="fs-4">{{ $proximoEvento?->titulo ?? 'Sin evento' }}
+            <x-slot:footer><span class="small">{{ $proximoEvento?->fecha_evento?->format('d/m/Y') }}</span></x-slot:footer>
+        </x-metric-card>
+    </div>
 </div>
 
 <section class="panel p-4 mb-4">

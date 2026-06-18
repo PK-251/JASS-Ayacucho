@@ -30,9 +30,9 @@
 @endif
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Pendientes</div><div class="metric-value" style="color:#f59e0b">{{ $kpis['pendientes'] }}</div></div></div>
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Proximos</div><div class="metric-value">{{ $kpis['proximos'] }}</div></div></div>
-    <div class="col-md-4"><div class="metric-card"><div class="metric-label">Pasados</div><div class="metric-value success">{{ $kpis['pasados'] }}</div></div></div>
+    <div class="col-md-4"><x-metric-card label="Pendientes" icon="clipboard-list" tone="warning" valueClass="warning">{{ $kpis['pendientes'] }}</x-metric-card></div>
+    <div class="col-md-4"><x-metric-card label="Proximos" icon="calendar">{{ $kpis['proximos'] }}</x-metric-card></div>
+    <div class="col-md-4"><x-metric-card label="Pasados" icon="calendar-check" tone="success" valueClass="success">{{ $kpis['pasados'] }}</x-metric-card></div>
 </div>
 
 <section class="panel table-panel">

@@ -16,6 +16,8 @@ class EnsureApiRole
             return response()->json(['message' => 'No autenticado.'], 401);
         }
 
+        $user->loadMissing('role');
+
         if (in_array($user->role?->nombre, $roles, true)) {
             return $next($request);
         }

@@ -38,8 +38,15 @@ do {
 } while (true);
 '
 
-php artisan config:clear >/dev/null 2>&1 || true
-php artisan route:clear >/dev/null 2>&1 || true
-php artisan view:clear >/dev/null 2>&1 || true
+if [ "${APP_ENV}" = "production" ]; then
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+    php artisan event:cache
+else
+    php artisan config:clear  >/dev/null 2>&1 || true
+    php artisan route:clear   >/dev/null 2>&1 || true
+    php artisan view:clear    >/dev/null 2>&1 || true
+fi
 
 exec "$@"

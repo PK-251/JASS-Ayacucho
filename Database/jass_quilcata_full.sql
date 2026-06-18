@@ -1869,8 +1869,8 @@ BEGIN
     SET p_numero_serie = CONCAT('QLC-', p_anio, '-', LPAD(v_numero, 4, '0'));
 END $$
 
-DROP PROCEDURE IF EXISTS sp_cobro_registrar $$
-CREATE PROCEDURE sp_cobro_registrar(
+DROP PROCEDURE IF EXISTS sp_registrar_cobro $$
+CREATE PROCEDURE sp_registrar_cobro(
     IN p_vecino_id BIGINT UNSIGNED,
     IN p_operador_id BIGINT UNSIGNED,
     IN p_jornada_id BIGINT UNSIGNED,
@@ -2304,7 +2304,7 @@ SELECT
     c.id AS id,
     c.numero_serie AS numero_serie,
     'cobro' AS origen,
-    DATE(c.fecha_cobro) AS fecha_ingreso,
+    c.fecha_cobro AS fecha_ingreso,
     c.fecha_cobro AS fecha,
     c.hora_cobro AS hora,
     v.id AS vecino_id,

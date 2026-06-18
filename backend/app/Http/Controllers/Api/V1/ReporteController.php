@@ -36,8 +36,8 @@ class ReporteController extends Controller
             'anio' => ['nullable', 'integer', 'between:2020,2100'],
             'mes' => ['nullable', 'integer', 'between:1,12'],
         ]);
-        $anio = (int) ($data['anio'] ?? 2026);
-        $mes = (int) ($data['mes'] ?? 5);
+        $anio = (int) ($data['anio'] ?? now()->year);
+        $mes = (int) ($data['mes'] ?? now()->month);
 
         try {
             DB::statement('CALL sp_generar_reporte_mensual(?, ?, ?, ?, @sp_reporte_id)', [$anio, $mes, true, $request->user()->id]);

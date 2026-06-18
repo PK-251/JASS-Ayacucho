@@ -45,32 +45,16 @@
 
 <div class="row g-3 mb-4">
     <div class="col-xl-3 col-md-6">
-        <div class="metric-card">
-            <div class="metric-label">Ingresos totales</div>
-            <div class="metric-value">S/{{ number_format((float) $resumen->total_ingresos, 2) }}</div>
-            <span class="badge badge-soft mt-2">{{ $periodoResumen }}</span>
-        </div>
+        <x-metric-card label="Ingresos totales" icon="trending-up" tone="success" :badge="$periodoResumen">S/{{ number_format((float) $resumen->total_ingresos, 2) }}</x-metric-card>
     </div>
     <div class="col-xl-3 col-md-6">
-        <div class="metric-card">
-            <div class="metric-label">Egresos operativos</div>
-            <div class="metric-value danger">S/{{ number_format((float) $resumen->total_egresos, 2) }}</div>
-            <span class="badge badge-danger-soft mt-2">{{ $resumen->num_egresos }} registros</span>
-        </div>
+        <x-metric-card label="Egresos operativos" icon="trending-down" tone="danger" valueClass="danger" :badge="$resumen->num_egresos . ' registros'" badgeClass="badge-danger-soft">S/{{ number_format((float) $resumen->total_egresos, 2) }}</x-metric-card>
     </div>
     <div class="col-xl-3 col-md-6">
-        <div class="metric-card">
-            <div class="metric-label">Balance neto</div>
-            <div class="metric-value {{ $resumen->balance_neto < 0 ? 'danger' : 'success' }}">S/{{ number_format((float) $resumen->balance_neto, 2) }}</div>
-            <span class="badge badge-soft mt-2">Ingresos - egresos</span>
-        </div>
+        <x-metric-card label="Balance neto" icon="wallet" :tone="$resumen->balance_neto < 0 ? 'danger' : 'success'" :valueClass="$resumen->balance_neto < 0 ? 'danger' : 'success'" badge="Ingresos - egresos">S/{{ number_format((float) $resumen->balance_neto, 2) }}</x-metric-card>
     </div>
     <div class="col-xl-3 col-md-6">
-        <div class="metric-card">
-            <div class="metric-label">Indice de morosidad</div>
-            <div class="metric-value" style="color:#f59e0b">{{ number_format((float) $resumen->porcentaje_morosidad, 1) }}%</div>
-            <span class="badge badge-warning-soft mt-2">{{ $resumen->num_vecinos_morosos }} usuarios</span>
-        </div>
+        <x-metric-card label="Indice de morosidad" icon="percent" tone="warning" valueClass="warning" :badge="$resumen->num_vecinos_morosos . ' usuarios'" badgeClass="badge-warning-soft">{{ number_format((float) $resumen->porcentaje_morosidad, 1) }}%</x-metric-card>
     </div>
 </div>
 

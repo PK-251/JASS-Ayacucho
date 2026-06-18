@@ -102,7 +102,7 @@ SELECT
     c.id AS id,
     c.numero_serie AS numero_serie,
     'cobro' AS origen,
-    DATE(c.fecha_cobro) AS fecha_ingreso,
+    c.fecha_cobro AS fecha_ingreso,
     c.fecha_cobro AS fecha,
     c.hora_cobro AS hora,
     v.id AS vecino_id,

@@ -18,16 +18,18 @@ class EgresoController extends Controller
 {
     public function index(Request $request): View
     {
-        $anio = (int) $request->query('anio', 2026);
-        $mes = (int) $request->query('mes', 5);
+        $anio = (int) $request->query('anio', now()->year);
+        $mes = (int) $request->query('mes', now()->month);
         $buscar = trim((string) $request->query('buscar'));
         $estado = (string) $request->query('estado', '');
         $categoriaId = $request->query('categoria_id');
 
+        $inicio = sprintf('%04d-%02d-01', $anio, $mes);
+        $fin    = date('Y-m-t', strtotime($inicio));
+
         $query = Egreso::query()
             ->with(['categoria', 'proveedor'])
-            ->whereYear('fecha_egreso', $anio)
-            ->whereMonth('fecha_egreso', $mes)
+            ->whereBetween('fecha_egreso', [$inicio, $fin]) // Optimizado: whereBetween usa idx_egresos_periodo
             ->when($estado !== '', fn ($q) => $q->where('estado', $estado))
             ->when($categoriaId, fn ($q) => $q->where('categoria_id', $categoriaId))
             ->when($buscar !== '', function ($q) use ($buscar) {
@@ -41,15 +43,21 @@ class EgresoController extends Controller
             ->orderByDesc('id');
 
         $egresos = $query->paginate(10)->withQueryString();
-        $base = Egreso::whereYear('fecha_egreso', $anio)->whereMonth('fecha_egreso', $mes);
+        $base = Egreso::whereBetween('fecha_egreso', [$inicio, $fin]); // Optimizado: whereBetween usa idx_egresos_periodo
         $validos = (clone $base)->whereIn('estado', ['aprobado', 'pendiente_aprobacion']);
-        $total = (float) (clone $validos)->sum('monto');
+
+        $stats = (clone $validos)->selectRaw("
+            COUNT(*) as num_egresos,
+            COALESCE(SUM(monto), 0) as total_egresos,
+            COALESCE(AVG(monto), 0) as gasto_promedio
+        ")->first();
+
+        $pendientesAprobacion = (clone $base)->where('estado', 'pendiente_aprobacion')->count();
 
         $distribucion = CategoriaEgreso::query()
-            ->leftJoin('egresos', function ($join) use ($anio, $mes) {
+            ->leftJoin('egresos', function ($join) use ($inicio, $fin) {
                 $join->on('egresos.categoria_id', '=', 'categorias_egreso.id')
-                    ->whereYear('egresos.fecha_egreso', $anio)
-                    ->whereMonth('egresos.fecha_egreso', $mes)
+                    ->whereBetween('egresos.fecha_egreso', [$inicio, $fin]) // Optimizado: whereBetween usa idx_egresos_periodo
                     ->where('egresos.estado', 'aprobado');
             })
             ->select('categorias_egreso.id', 'categorias_egreso.nombre', DB::raw('COALESCE(SUM(egresos.monto),0) as total'), DB::raw('COUNT(egresos.id) as cantidad'))
@@ -65,10 +73,10 @@ class EgresoController extends Controller
             'anio' => $anio,
             'mes' => $mes,
             'categorias' => CategoriaEgreso::where('activa', true)->orderBy('nombre')->get(),
-            'numEgresos' => (clone $validos)->count(),
-            'totalEgresos' => $total,
-            'gastoPromedio' => (clone $validos)->avg('monto') ?? 0,
-            'pendientesAprobacion' => (clone $base)->where('estado', 'pendiente_aprobacion')->count(),
+            'numEgresos' => (int) $stats->num_egresos,
+            'totalEgresos' => (float) $stats->total_egresos,
+            'gastoPromedio' => (float) $stats->gasto_promedio,
+            'pendientesAprobacion' => $pendientesAprobacion,
             'distribucion' => $distribucion,
         ]);
     }

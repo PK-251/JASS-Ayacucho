@@ -40,7 +40,13 @@ class AsistenciaController extends Controller
         $kpis = [
             'pendientes' => Evento::where('estado', 'lista_pendiente')->whereNull('deleted_at')->count(),
             'proximos' => Evento::where('estado', 'programado')->whereNull('deleted_at')->count(),
-            'realizados_mes' => Evento::where('estado', 'realizado')->whereYear('fecha_evento', 2026)->whereMonth('fecha_evento', 5)->count(),
+            'realizados_mes' => Evento::where('estado', 'realizado')
+                ->whereNull('deleted_at')
+                ->whereBetween('fecha_evento', [
+                    now()->startOfMonth()->toDateString(),
+                    now()->endOfMonth()->toDateString(),
+                ])
+                ->count(),
             'multas_pendientes' => MultaAplicada::whereNotNull('evento_id')->where('estado', 'pendiente')->count(),
         ];
 
@@ -230,12 +236,19 @@ class AsistenciaController extends Controller
 
     private function stats(Evento $evento): array
     {
-        $base = Asistencia::where('evento_id', $evento->id);
-        $total = (clone $base)->count();
-        $presentes = (clone $base)->where('estado', 'presente')->count();
-        $tardes = (clone $base)->where('estado', 'tarde')->count();
-        $justificados = (clone $base)->where('estado', 'justificado')->count();
-        $ausentes = (clone $base)->where('estado', 'ausente')->count();
+        $row = Asistencia::where('evento_id', $evento->id)->selectRaw("
+            COUNT(*) as total,
+            COUNT(CASE WHEN estado = 'presente' THEN 1 END) as presentes,
+            COUNT(CASE WHEN estado = 'tarde' THEN 1 END) as tardes,
+            COUNT(CASE WHEN estado = 'justificado' THEN 1 END) as justificados,
+            COUNT(CASE WHEN estado = 'ausente' THEN 1 END) as ausentes
+        ")->first();
+
+        $presentes = (int) $row->presentes;
+        $tardes = (int) $row->tardes;
+        $justificados = (int) $row->justificados;
+        $ausentes = (int) $row->ausentes;
+        $total = (int) $row->total;
         $marcados = $presentes + $tardes + $justificados + $ausentes;
 
         return compact('total', 'presentes', 'tardes', 'justificados', 'ausentes', 'marcados');

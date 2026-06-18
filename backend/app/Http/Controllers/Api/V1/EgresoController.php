@@ -18,14 +18,23 @@ class EgresoController extends Controller
 
     public function index(Request $request)
     {
-        $anio = (int) $request->query('anio', 2026);
-        $mes = (int) $request->query('mes', 5);
+        $anio = (int) $request->query('anio', now()->year);
+        $mes = (int) $request->query('mes', now()->month);
         $buscar = trim((string) $request->query('buscar'));
         $estado = (string) $request->query('estado', '');
+
+        $inicio = sprintf('%04d-%02d-01', $anio, $mes);
+        $fin    = date('Y-m-t', strtotime($inicio));
+
         $egresos = Egreso::with(['categoria', 'proveedor'])
-            ->whereYear('fecha_egreso', $anio)->whereMonth('fecha_egreso', $mes)
+            ->whereBetween('fecha_egreso', [$inicio, $fin]) // Optimizado: whereBetween usa idx_egresos_periodo
             ->when($estado !== '', fn ($q) => $q->where('estado', $estado))
-            ->when($buscar !== '', fn ($q) => $q->where('numero_serie', 'like', "%{$buscar}%")->orWhere('concepto', 'like', "%{$buscar}%"))
+            ->when($buscar !== '', function ($q) use ($buscar) {
+                $q->where(function ($inner) use ($buscar) {
+                    $inner->where('numero_serie', 'like', "%{$buscar}%")
+                        ->orWhere('concepto', 'like', "%{$buscar}%");
+                });
+            })
             ->orderByDesc('fecha_egreso')->orderByDesc('id')
             ->paginate((int) $request->query('per_page', 10));
 

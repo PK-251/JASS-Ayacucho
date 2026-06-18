@@ -11,14 +11,17 @@ use App\Models\Multa;
 use App\Models\Proveedor;
 use App\Models\Tarifa;
 use App\Models\TipoEvento;
+use Illuminate\Support\Facades\Cache;
 
 class CatalogController extends Controller
 {
     use ApiHelpers;
 
+    public const CACHE_KEY = 'catalogos:v1';
+
     public function index()
     {
-        return $this->ok([
+        return $this->ok(Cache::remember(self::CACHE_KEY, 3600, fn () => [
             'categorias_servicio' => CategoriaServicio::where('activa', true)->orderBy('nombre')->get(),
             'categorias_ingreso' => CategoriaIngreso::where('activa', true)->orderBy('nombre')->get(),
             'categorias_egreso' => CategoriaEgreso::where('activa', true)->orderBy('nombre')->get(),
@@ -26,6 +29,6 @@ class CatalogController extends Controller
             'tipos_evento' => TipoEvento::where('activa', true)->orderBy('nombre')->get(),
             'multas' => Multa::whereNull('deleted_at')->orderBy('codigo')->get(),
             'tarifas_vigentes' => Tarifa::with('categoria')->where('activa', true)->orderBy('categoria_id')->get(),
-        ]);
+        ]));
     }
 }

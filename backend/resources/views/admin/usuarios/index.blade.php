@@ -22,10 +22,10 @@
     @endif
 
     <div class="row g-3 mb-4">
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Total usuarios</div><div class="metric-value">{{ $totalUsuarios }}</div><span class="badge badge-soft mt-2">Registrados</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Al dia</div><div class="metric-value success">{{ $activos }}</div><span class="badge badge-soft mt-2">{{ $totalUsuarios ? round($activos * 100 / $totalUsuarios, 1) : 0 }}% del total</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Suspendidos</div><div class="metric-value danger">{{ $suspendidos }}</div><span class="badge badge-warning-soft mt-2">Revisar</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Cortados</div><div class="metric-value danger">{{ $cortados }}</div><span class="badge badge-danger-soft mt-2">Requieren atencion</span></div></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Total usuarios" icon="users" badge="Registrados">{{ $totalUsuarios }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Al dia" icon="user-check" tone="success" valueClass="success" :badge="($totalUsuarios ? round($activos * 100 / $totalUsuarios, 1) : 0) . '% del total'">{{ $activos }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Suspendidos" icon="ban" tone="warning" valueClass="danger" badge="Revisar" badgeClass="badge-warning-soft">{{ $suspendidos }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Cortados" icon="user-x" tone="danger" valueClass="danger" badge="Requieren atencion" badgeClass="badge-danger-soft">{{ $cortados }}</x-metric-card></div>
     </div>
 
     <section class="panel table-panel">

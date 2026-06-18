@@ -33,10 +33,10 @@
 @endif
 
 <div class="row g-3 mb-4">
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Total ingresos</div><div class="metric-value">S/{{ number_format((float) $reporte->total_ingresos, 2) }}</div><span class="badge badge-soft mt-2">{{ $reporte->num_cobros }} cobros</span></div></div>
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Total egresos</div><div class="metric-value danger">S/{{ number_format((float) $reporte->total_egresos, 2) }}</div><span class="badge badge-danger-soft mt-2">{{ $reporte->num_egresos }} egresos</span></div></div>
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Balance neto</div><div class="metric-value {{ $reporte->balance_neto < 0 ? 'danger' : 'success' }}">S/{{ number_format((float) $reporte->balance_neto, 2) }}</div><span class="badge badge-soft mt-2">Final</span></div></div>
-    <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Morosidad</div><div class="metric-value" style="color:#f59e0b">{{ number_format((float) $reporte->porcentaje_morosidad, 1) }}%</div><span class="badge badge-warning-soft mt-2">{{ $reporte->num_vecinos_morosos }}/{{ $reporte->num_vecinos_total }}</span></div></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Total ingresos" icon="trending-up" tone="success" :badge="$reporte->num_cobros . ' cobros'">S/{{ number_format((float) $reporte->total_ingresos, 2) }}</x-metric-card></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Total egresos" icon="trending-down" tone="danger" valueClass="danger" :badge="$reporte->num_egresos . ' egresos'" badgeClass="badge-danger-soft">S/{{ number_format((float) $reporte->total_egresos, 2) }}</x-metric-card></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Balance neto" icon="wallet" :tone="$reporte->balance_neto < 0 ? 'danger' : 'success'" :valueClass="$reporte->balance_neto < 0 ? 'danger' : 'success'" badge="Final">S/{{ number_format((float) $reporte->balance_neto, 2) }}</x-metric-card></div>
+    <div class="col-xl-3 col-md-6"><x-metric-card label="Morosidad" icon="percent" tone="warning" valueClass="warning" :badge="$reporte->num_vecinos_morosos . '/' . $reporte->num_vecinos_total" badgeClass="badge-warning-soft">{{ number_format((float) $reporte->porcentaje_morosidad, 1) }}%</x-metric-card></div>
 </div>
 
 <div class="row g-3">

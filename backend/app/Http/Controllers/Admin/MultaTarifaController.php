@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V1\CatalogController;
 use App\Models\CategoriaServicio;
 use App\Models\Multa;
 use App\Models\Tarifa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -57,6 +59,8 @@ class MultaTarifaController extends Controller
             'created_by' => auth()->id(),
         ]);
 
+        $this->forgetCatalogCache();
+
         return redirect()->route('admin.multas.index')->with('success', 'Multa '.$multa->codigo.' creada correctamente.');
     }
 
@@ -77,6 +81,8 @@ class MultaTarifaController extends Controller
             'updated_by' => auth()->id(),
         ]);
 
+        $this->forgetCatalogCache();
+
         return redirect()->route('admin.multas.index')->with('success', 'Multa actualizada correctamente.');
     }
 
@@ -89,6 +95,8 @@ class MultaTarifaController extends Controller
             'updated_by' => auth()->id(),
             'deleted_at' => now(),
         ]);
+
+        $this->forgetCatalogCache();
 
         return redirect()->route('admin.multas.index')->with('success', 'Multa desactivada correctamente.');
     }
@@ -140,7 +148,14 @@ class MultaTarifaController extends Controller
             ]);
         });
 
+        $this->forgetCatalogCache();
+
         return redirect()->route('admin.multas.index')->with('success', 'Tarifa actualizada correctamente.');
+    }
+
+    private function forgetCatalogCache(): void
+    {
+        Cache::forget(CatalogController::CACHE_KEY);
     }
 
     private function validatedMulta(Request $request): array

@@ -22,10 +22,10 @@
     @endif
 
     <div class="row g-3 mb-4">
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Tarifas vigentes</div><div class="metric-value">{{ $tarifasActivas }}</div><span class="badge badge-soft mt-2">Por categoria</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Multas activas</div><div class="metric-value">{{ $multasActivas }}</div><span class="badge badge-soft mt-2">Configuradas</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Multas aplicadas</div><div class="metric-value danger">{{ $multasAplicadas }}</div><span class="badge badge-warning-soft mt-2">Historico</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Inactivas</div><div class="metric-value" style="color:#f59e0b">{{ $multasInactivas }}</div><span class="badge badge-danger-soft mt-2">Sin uso</span></div></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Tarifas vigentes" icon="tag" badge="Por categoria">{{ $tarifasActivas }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Multas activas" icon="gavel" badge="Configuradas">{{ $multasActivas }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Multas aplicadas" icon="gavel" tone="danger" valueClass="danger" badge="Historico" badgeClass="badge-warning-soft">{{ $multasAplicadas }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Inactivas" icon="alert-triangle" tone="warning" valueClass="warning" badge="Sin uso" badgeClass="badge-danger-soft">{{ $multasInactivas }}</x-metric-card></div>
     </div>
 
     <div class="row g-3 mb-4">

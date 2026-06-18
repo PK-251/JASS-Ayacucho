@@ -2,6 +2,7 @@ FROM php:8.4-fpm-bookworm
 
 ARG UID=1000
 ARG GID=1000
+ARG APP_ENV=local
 
 WORKDIR /var/www/html
 
@@ -29,7 +30,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN groupadd -g ${GID} laravel \
     && useradd -u ${UID} -g laravel -m laravel
 
-COPY docker/php/local.ini /usr/local/etc/php/conf.d/99-local.ini
+COPY docker/php/${APP_ENV}.ini /usr/local/etc/php/conf.d/app.ini
 COPY docker/app/entrypoint.sh /usr/local/bin/laravel-entrypoint
 RUN chmod +x /usr/local/bin/laravel-entrypoint
 

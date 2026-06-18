@@ -19,14 +19,14 @@ class CobroController extends Controller
 
     public function index(Request $request)
     {
-        $anio = (int) $request->query('anio', 2026);
-        $mes = (int) $request->query('mes', 5);
+        $anio = (int) $request->query('anio', now()->year);
+        $mes = (int) $request->query('mes', now()->month);
         $buscar = trim((string) $request->query('buscar'));
         $estado = (string) $request->query('estado', '');
 
         $cobros = Cobro::with(['vecino:id,codigo,nombres,apellidos,documento_num', 'operador:id,nombres,apellidos'])
-            ->whereYear('fecha_cobro', $anio)
-            ->whereMonth('fecha_cobro', $mes)
+            ->where('periodo_anio', $anio)
+            ->where('periodo_mes', $mes)
             ->when($estado !== '', fn ($q) => $q->where('estado', $estado))
             ->when($request->user()->isOperator(), fn ($q) => $q->where('operador_id', $request->user()->id))
             ->when($buscar !== '', function ($q) use ($buscar) {

@@ -49,7 +49,7 @@
         </div>
         <div class="col-md-4">
             <label class="form-label fw-semibold">Fecha</label>
-            <input type="date" class="form-control" name="fecha_evento" value="{{ old('fecha_evento', '2026-05-15') }}" required>
+            <input type="date" class="form-control" name="fecha_evento" value="{{ old('fecha_evento', now()->toDateString()) }}" required>
         </div>
         <div class="col-md-4">
             <label class="form-label fw-semibold">Hora</label>

@@ -18,15 +18,17 @@ class IngresoController extends Controller
 {
     public function index(Request $request): View
     {
-        $anio = (int) $request->query('anio', 2026);
-        $mes = (int) $request->query('mes', 5);
+        $anio = (int) $request->query('anio', now()->year);
+        $mes = (int) $request->query('mes', now()->month);
         $buscar = trim((string) $request->query('buscar'));
         $origen = (string) $request->query('origen', '');
         $estado = (string) $request->query('estado', '');
 
+        $inicio = sprintf('%04d-%02d-01', $anio, $mes);
+        $fin    = date('Y-m-t', strtotime($inicio));
+
         $base = DB::table('vista_ingresos_completa')
-            ->whereYear('fecha_ingreso', $anio)
-            ->whereMonth('fecha_ingreso', $mes);
+            ->whereBetween('fecha_ingreso', [$inicio, $fin]); // Optimizado: whereBetween usa idx_ingresos_periodo
 
         $movimientos = (clone $base)
             ->when($buscar !== '', function ($q) use ($buscar) {
@@ -46,6 +48,14 @@ class IngresoController extends Controller
 
         $activos = (clone $base)->whereIn('estado', ['pagado', 'activo']);
 
+        $stats = (clone $activos)->selectRaw("
+            COUNT(*) as total_transacciones,
+            COALESCE(SUM(monto), 0) as total_ingresos,
+            COALESCE(AVG(monto), 0) as ticket_promedio,
+            COUNT(CASE WHEN origen = 'cobro' THEN 1 END) as de_cobros,
+            COUNT(CASE WHEN origen = 'manual' THEN 1 END) as manuales
+        ")->first();
+
         $categorias = (clone $activos)
             ->select('categoria', DB::raw('COUNT(*) as cantidad'), DB::raw('SUM(monto) as total'))
             ->groupBy('categoria')
@@ -59,11 +69,11 @@ class IngresoController extends Controller
             'estado' => $estado,
             'anio' => $anio,
             'mes' => $mes,
-            'totalTransacciones' => (clone $activos)->count(),
-            'totalIngresos' => (clone $activos)->sum('monto'),
-            'ticketPromedio' => (clone $activos)->avg('monto') ?? 0,
-            'deCobros' => (clone $activos)->where('origen', 'cobro')->count(),
-            'manuales' => (clone $activos)->where('origen', 'manual')->count(),
+            'totalTransacciones' => (int) $stats->total_transacciones,
+            'totalIngresos' => (float) $stats->total_ingresos,
+            'ticketPromedio' => (float) $stats->ticket_promedio,
+            'deCobros' => (int) $stats->de_cobros,
+            'manuales' => (int) $stats->manuales,
             'pendienteCobro' => PagoPendiente::where('estado', 'pendiente')->sum('monto_pendiente'),
             'categorias' => $categorias,
         ]);
@@ -196,7 +206,6 @@ class IngresoController extends Controller
 
         $data = $request->validate($rules);
         unset($data['comprobante']);
-
         return $data;
     }
 

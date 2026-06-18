@@ -19,10 +19,10 @@
     @endif
 
     <div class="row g-3 mb-4">
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Total ingresos</div><div class="metric-value">S/{{ number_format((float) $totalIngresos, 2) }}</div><span class="badge badge-soft mt-2">Mayo {{ $anio }}</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Transacciones</div><div class="metric-value">{{ $totalTransacciones }}</div><span class="badge badge-soft mt-2">{{ $deCobros }} de cobros</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Ticket promedio</div><div class="metric-value">S/{{ number_format((float) $ticketPromedio, 2) }}</div><span class="badge badge-soft mt-2">{{ $manuales }} manuales</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Pendiente de cobro</div><div class="metric-value danger">S/{{ number_format((float) $pendienteCobro, 2) }}</div><span class="badge badge-danger-soft mt-2">Padron</span></div></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Total ingresos" icon="trending-up" tone="success" :badge="'Mayo ' . $anio">S/{{ number_format((float) $totalIngresos, 2) }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Transacciones" icon="hash" :badge="$deCobros . ' de cobros'">{{ $totalTransacciones }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Ticket promedio" icon="calculator" :badge="$manuales . ' manuales'">S/{{ number_format((float) $ticketPromedio, 2) }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Pendiente de cobro" icon="alert-triangle" tone="danger" valueClass="danger" badge="Padron" badgeClass="badge-danger-soft">S/{{ number_format((float) $pendienteCobro, 2) }}</x-metric-card></div>
     </div>
 
     <div class="row g-3 mb-4">

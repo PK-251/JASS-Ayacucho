@@ -19,10 +19,10 @@
     @endif
 
     <div class="row g-3 mb-4">
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Total egresos</div><div class="metric-value danger">S/{{ number_format((float) $totalEgresos, 2) }}</div><span class="badge badge-danger-soft mt-2">Mayo {{ $anio }}</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">N. de egresos</div><div class="metric-value">{{ $numEgresos }}</div><span class="badge badge-soft mt-2">Este mes</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Gasto promedio</div><div class="metric-value">S/{{ number_format((float) $gastoPromedio, 2) }}</div><span class="badge badge-soft mt-2">Por movimiento</span></div></div>
-        <div class="col-xl-3 col-md-6"><div class="metric-card"><div class="metric-label">Pendientes</div><div class="metric-value" style="color:#f59e0b">{{ $pendientesAprobacion }}</div><span class="badge badge-warning-soft mt-2">Por aprobar</span></div></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Total egresos" icon="trending-down" tone="danger" valueClass="danger" :badge="'Mayo ' . $anio" badgeClass="badge-danger-soft">S/{{ number_format((float) $totalEgresos, 2) }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="N. de egresos" icon="hash" badge="Este mes">{{ $numEgresos }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Gasto promedio" icon="calculator" badge="Por movimiento">S/{{ number_format((float) $gastoPromedio, 2) }}</x-metric-card></div>
+        <div class="col-xl-3 col-md-6"><x-metric-card label="Pendientes" icon="clock" tone="warning" valueClass="warning" badge="Por aprobar" badgeClass="badge-warning-soft">{{ $pendientesAprobacion }}</x-metric-card></div>
     </div>
 
     <div class="row g-3 mb-4">

@@ -24,12 +24,12 @@
 @endif
 
 <div class="row g-3 mb-4">
-    <div class="col-md-2"><div class="metric-card"><div class="metric-label">Convocados</div><div class="metric-value">{{ $stats['total'] }}</div></div></div>
-    <div class="col-md-2"><div class="metric-card"><div class="metric-label">Marcados</div><div class="metric-value">{{ $stats['marcados'] }}</div></div></div>
-    <div class="col-md-2"><div class="metric-card"><div class="metric-label">Presentes</div><div class="metric-value success">{{ $stats['presentes'] }}</div></div></div>
-    <div class="col-md-2"><div class="metric-card"><div class="metric-label">Tardes</div><div class="metric-value" style="color:#f59e0b">{{ $stats['tardes'] }}</div></div></div>
-    <div class="col-md-2"><div class="metric-card"><div class="metric-label">Justif.</div><div class="metric-value">{{ $stats['justificados'] }}</div></div></div>
-    <div class="col-md-2"><div class="metric-card"><div class="metric-label">Ausentes</div><div class="metric-value danger">{{ $stats['ausentes'] }}</div></div></div>
+    <div class="col-md-2"><x-metric-card label="Convocados" icon="users">{{ $stats['total'] }}</x-metric-card></div>
+    <div class="col-md-2"><x-metric-card label="Marcados" icon="file-text">{{ $stats['marcados'] }}</x-metric-card></div>
+    <div class="col-md-2"><x-metric-card label="Presentes" icon="user-check" tone="success" valueClass="success">{{ $stats['presentes'] }}</x-metric-card></div>
+    <div class="col-md-2"><x-metric-card label="Tardes" icon="clock" tone="warning" valueClass="warning">{{ $stats['tardes'] }}</x-metric-card></div>
+    <div class="col-md-2"><x-metric-card label="Justif." icon="clipboard-list">{{ $stats['justificados'] }}</x-metric-card></div>
+    <div class="col-md-2"><x-metric-card label="Ausentes" icon="user-x" tone="danger" valueClass="danger">{{ $stats['ausentes'] }}</x-metric-card></div>
 </div>
 
 <section class="panel table-panel">
