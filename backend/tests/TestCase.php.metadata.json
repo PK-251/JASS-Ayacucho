@@ -1,0 +1,5 @@
+{
+  "summary":  "TestCase.php configuring DatabaseTransactions to prevent tests from modifying the database permanently.",
+  "updatedAt":  "2026-06-18T20:29:35.010277100Z",
+  "userFacing":  true
+}

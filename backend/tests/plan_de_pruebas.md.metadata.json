@@ -1,0 +1,5 @@
+{
+  "summary":  "Plan de pruebas revisado enfocado exclusivamente en el backend y rutas web del JASS Quilcata, excluyendo el frontend y la API REST. Ubicado en la carpeta plan_de_pruebas.",
+  "updatedAt":  "2026-06-18T20:24:41.264701200Z",
+  "userFacing":  true
+}
