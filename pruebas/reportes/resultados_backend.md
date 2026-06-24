@@ -1,6 +1,22 @@
 # Resultados de Ejecucion Backend
 
-Fecha: 18/06/2026
+Fecha ultima ejecucion documentada: 18/06/2026  
+Actualizacion de trazabilidad: 22/06/2026
+
+## Trazabilidad con plan unificado
+
+Los resultados de esta suite se mapean al plan DOCX v1.0 en [`../mapeo_casos_prueba.md`](../mapeo_casos_prueba.md).
+
+| Test PHPUnit | ID BE | ID(s) DOCX |
+|---|---|---|
+| `AdminDashboardTest::test_usuario_no_autenticado_es_redireccionado_al_login` | BE-001 | SEC-ROL (web) |
+| `AdminDashboardTest::test_administrador_autenticado_puede_ver_dashboard` | BE-002 | UT-AUTH-01, SEC-ROL-03 |
+| `AdminDashboardTest::test_operador_no_puede_entrar_al_panel_admin` | BE-003 | SEC-ROL-01 |
+| `ApiAuthBackendTest::test_login_api_devuelve_token_con_credenciales_validas` | BE-004 | API (login) |
+| `ApiAuthBackendTest::test_login_api_rechaza_password_incorrecto_y_registra_intento` | BE-005 | UT-AUTH-02 |
+| `ApiAuthBackendTest::test_login_api_bloquea_usuario_tras_tres_intentos_fallidos` | BE-006 | UT-AUTH-03, SEC-BRU-01 |
+| `ApiAuthBackendTest::test_endpoint_me_requiere_autenticacion` | BE-007 | SEC-TOK-03 |
+| `ExampleTest::test_la_raiz_redirige_al_login_si_no_hay_sesion` | — | — |
 
 ## Pruebas PHPUnit agregadas
 
