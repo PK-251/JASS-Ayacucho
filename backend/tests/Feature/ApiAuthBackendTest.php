@@ -4,19 +4,16 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
-use Tests\TestCase;
+use Tests\Support\SqliteTestCase;
 
-class ApiAuthBackendTest extends TestCase
+class ApiAuthBackendTest extends SqliteTestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createSchema();
-        $this->seedUser();
+        $this->seedApiAdminUser();
     }
 
     public function test_login_api_devuelve_token_con_credenciales_validas(): void
@@ -83,63 +80,7 @@ class ApiAuthBackendTest extends TestCase
         $response->assertStatus(401);
     }
 
-    private function createSchema(): void
-    {
-        Schema::dropIfExists('personal_access_tokens');
-        Schema::dropIfExists('login_logs');
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('roles');
-
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre')->unique();
-            $table->string('descripcion')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username')->unique();
-            $table->string('nombres');
-            $table->string('apellidos');
-            $table->string('email')->nullable()->unique();
-            $table->string('password');
-            $table->foreignId('rol_id');
-            $table->string('estado')->default('activo');
-            $table->unsignedTinyInteger('intentos_fallidos')->default(0);
-            $table->timestamp('bloqueado_hasta')->nullable();
-            $table->boolean('requiere_cambio_password')->default(false);
-            $table->timestamp('ultimo_login')->nullable();
-            $table->foreignId('created_by')->nullable();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
-        });
-
-        Schema::create('login_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->nullable();
-            $table->string('username_intentado');
-            $table->string('ip_address');
-            $table->text('user_agent')->nullable();
-            $table->string('resultado');
-            $table->string('motivo_fallo')->nullable();
-            $table->timestamp('fecha_intento')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
-            $table->id();
-            $table->morphs('tokenable');
-            $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
-            $table->timestamps();
-        });
-    }
-
-    private function seedUser(): void
+    private function seedApiAdminUser(): void
     {
         $role = Role::create(['nombre' => 'Administrador']);
 

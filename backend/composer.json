@@ -48,7 +48,14 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@php artisan test"
+            "@php artisan test --testsuite=fast"
+        ],
+        "test:integration": [
+            "@php artisan config:clear --ansi",
+            "@php vendor/bin/phpunit -c phpunit.integration.xml"
+        ],
+        "test:setup-db": [
+            "@php scripts/setup-test-database.php"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

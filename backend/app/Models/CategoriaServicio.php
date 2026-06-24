@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CategoriaServicio extends Model
 {
+    use HasFactory;
     protected $table = 'categorias_servicio';
     protected $guarded = ['id'];
     protected $casts = ['activa' => 'boolean'];

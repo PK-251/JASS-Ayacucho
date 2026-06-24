@@ -1,8 +1,10 @@
 # Plan de Pruebas - JASS Quilcata / Ayacucho (Solo Backend)
 
+> **Plan unificado:** El roadmap vigente (incluye API REST, PHPUnit por fases y cronograma) está en [`pruebas/plan_implementacion.md`](../../pruebas/plan_implementacion.md). Este documento conserva la estrategia técnica de ambiente MariaDB y casos web históricos.
+
 Este documento define la estrategia, alcance, ambiente y casos de prueba centrados **exclusivamente en el Backend y la lógica del servidor (Web/Controladores y Base de Datos)** para el sistema de la **Junta Administradora de Servicios de Saneamiento (JASS) Quilcata / Ayacucho**.
 
-Se excluyen explícitamente el Frontend y la API REST de este plan.
+La API REST (`/api/v1/*`) queda **fuera del alcance de este documento histórico**; ver el plan unificado para cobertura API.
 
 ---
 
